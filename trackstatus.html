@@ -1,0 +1,209 @@
+<html>
+ <head>
+  <title>
+   Track Issue Status - Sadak Sathi Seva
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+ </head>
+ <body class="bg-gray-100 flex flex-col min-h-screen">
+  <!-- Navbar -->
+  <header class="bg-blue-900 text-white relative">
+    <div class="container mx-auto flex justify-between items-center py-4 px-6">
+        <div class="flex items-center">
+            <img alt="Sadak Sathi Seva Logo" class="mr-3 h-10 w-10" src="logo.png" />
+            <div>
+                <h1 class="text-xl font-bold">Sadak Sathi Seva</h1>
+                <p class="text-sm">Ministry of Road Transport &amp; Highways</p>
+            </div>
+        </div>
+        <button id="mobile-menu-button" class="lg:hidden focus:outline-none">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+        <nav class="hidden lg:flex space-x-6">
+            <a class="hover:underline" href="#"><div class="gtranslate_wrapper"></div></a>
+            <a class="hover:underline" href="home">Home</a>
+            <a class="hover:underline" href="aboutus">About Us</a>
+            <a class="hover:underline" href="datastatistic">Data Stats</a>
+            <a class="hover:underline" href="FAQs">FAQs</a>
+            <a class="hover:underline" href="contactus">Contact Us</a>
+            <button class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded"><a href="profile">Profile</a></button>
+        </nav>
+    </div>
+    <div id="mobile-menu" class="hidden lg:hidden absolute top-full left-0 right-0 bg-blue-900 shadow-md z-10">
+        <ul class="py-4 px-6 space-y-4">
+            <a class="hover:underline" href="#"><div class="gtranslate_wrapper"></div></a>
+            
+            <li><a class="block hover:underline" href="home">Home</a></li>
+            <li><a class="block hover:underline" href="aboutus">About Us</a></li>
+            <li><a class="block hover:underline" href="datastatistic">Data Stats</a></li>
+            <li><a class="block hover:underline" href="FAQs">FAQs</a></li>
+            <li><a class="block hover:underline" href="contactus">Contact Us</a></li>
+            <li><button class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded w-full"><a href="profile">Profile</a></button></li>
+        </ul>
+    </div>
+</header>
+  <!-- Main Content -->
+  <div class="container mx-auto py-12 flex-grow">
+   <h2 class="text-3xl font-bold text-center text-blue-900">
+    Track Issue Status
+   </h2>
+   <p class="text-center text-gray-600 mb-8">
+    Enter your tracking ID to check the status of your reported road issue
+   </p>
+   <div class="bg-white p-6 rounded-lg shadow-md max-w-2xl mx-auto">
+    <h3 class="text-xl font-bold mb-4">
+     Issue Tracking
+    </h3>
+    <p class="text-gray-600 mb-4">
+     Enter the tracking ID provided when you reported the issue
+    </p>
+    <div class="flex items-center space-x-4">
+     <input class="flex-grow p-2 border rounded" placeholder="e.g., MH20230615" type="text"/>
+     <button class="bg-orange-500 text-white px-4 py-2 rounded">
+      Search
+     </button>
+    </div>
+   </div>
+  </div>
+  <!-- Footer -->
+  <footer class="bg-blue-900 text-white py-8">
+   <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+    <div>
+     <h3 class="text-lg font-bold mb-4">
+      Sadak Sathi Seva
+     </h3>
+     <p class="text-sm mb-4">
+      Ministry of Road Transport &amp; Highways
+     </p>
+     <p class="text-sm mb-4">
+      A Government of India initiative to empower citizens to report road issues and track their resolution.
+     </p>
+     <div class="flex space-x-4">
+      <a href="#">
+       <i class="fab fa-facebook-f">
+       </i>
+      </a>
+      <a href="#">
+       <i class="fab fa-twitter">
+       </i>
+      </a>
+      <a href="#">
+       <i class="fab fa-instagram">
+       </i>
+      </a>
+      <a href="#">
+       <i class="fab fa-youtube">
+       </i>
+      </a>
+     </div>
+    </div>
+    <div>
+     <h3 class="text-lg font-bold mb-4">
+      Quick Links
+     </h3>
+     <ul class="space-y-2">
+      <li>
+       <a class="hover:underline" href="home">
+        Home
+       </a>
+      </li>
+      <li>
+       <a class="hover:underline" href="aboutus">
+        About Us
+       </a>
+      </li>
+      <li>
+       <a class="hover:underline" href="trackstatus">
+        Track Status
+       </a>
+      </li>
+      <li>
+       <a class="hover:underline" href="FAQs">
+        FAQs
+       </a>
+      </li>
+      <li>
+       <a class="hover:underline" href="contactus">
+        Contact Us
+       </a>
+      </li>
+     </ul>
+    </div>
+    <div>
+     <h3 class="text-lg font-bold mb-4">
+      Resources
+     </h3>
+     <ul class="space-y-2">
+      <li>
+       <a class="hover:underline" href="#">
+        Reporting Guidelines
+       </a>
+      </li>
+      <li>
+       <a class="hover:underline" href="#">
+        Success Stories
+       </a>
+      </li>
+      <li>
+       <a class="hover:underline" href="#">
+        Statistics &amp; Reports
+       </a>
+      </li>
+      <li>
+       <a class="hover:underline" href="#">
+        Open Data
+       </a>
+      </li>
+      <li>
+       <a class="hover:underline" href="#">
+        Media Resources
+       </a>
+      </li>
+      <li>
+       <a class="hover:underline" href="#">
+        Downloads &amp; Forms
+       </a>
+      </li>
+     </ul>
+    </div>
+    <div>
+     <h3 class="text-lg font-bold mb-4">
+      Contact Us
+     </h3>
+     <p class="text-sm mb-4">
+      Ministry of Road Transport &amp; Highways, Transport Bhawan, Parliament Street, New Delhi - 110001
+     </p>
+     <p class="text-sm mb-4">
+      <i class="fas fa-phone-alt">
+      </i>
+      1800-XXX-XXXX (Toll Free)
+     </p>
+     <p class="text-sm">
+      <i class="fas fa-envelope">
+      </i>
+      support@sadaksathiseva.gov.in
+     </p>
+    </div>
+   </div>
+  </footer>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const checkBtn = document.getElementById('checkStatusBtn');
+        const complaintInput = document.getElementById('complaintInput');
+        const emergencyBtn = document.getElementById('reportEmergencyBtn');
+
+        // Toggle mobile menu visibility
+        mobileMenuButton?.addEventListener('click', () => {
+            mobileMenu?.classList.toggle('hidden');
+        });        
+    });
+</script>
+<script>window.gtranslateSettings = {"default_language":"en","languages":["en","hi","bn","mr","te","ta"],"wrapper_selector":".gtranslate_wrapper","flag_size":24,"alt_flags":{"en":"usa"}}</script>
+<script src="https://cdn.gtranslate.net/widgets/latest/popup.js" defer></script>
+ </body>
+</html>
