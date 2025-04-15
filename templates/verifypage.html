@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Learn About The Process</title>
+
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  </head>
+  <body class="bg-gray-50">
+    <!-- navbar component -->
+    <header class="bg-blue-900 text-white relative">
+        <div class="container mx-auto flex justify-between items-center py-4 px-6">
+          <div class="flex items-center">
+            <img alt="Sadak Sathi Seva Logo" class="mr-3 h-10 w-10" src="https://placehold.co/50x50" />
+            <div>
+              <h1 class="text-xl font-bold">Sadak Sathi Seva</h1>
+              <p class="text-sm">Ministry of Road Transport &amp; Highways</p>
+            </div>
+          </div>
+          <button id="mobile-menu-button" class="lg:hidden focus:outline-none">
+            <i class="fas fa-bars text-xl"></i>
+          </button>
+          <nav class="hidden lg:flex space-x-6">
+            <a class="hover:underline" href="#"><div class="gtranslate_wrapper"></div></a>
+            <a class="hover:underline" href="home">Home</a>
+            <a class="hover:underline" href="aboutus">About Us</a>
+            <a class="hover:underline" href="#">Data Stats</a>
+            <a class="hover:underline" href="faq">FAQs</a>
+            <a class="hover:underline" href="contactus">Contact Us</a>
+            {% if request.session.get('access_token') %}
+            <div class="relative inline-block text-left group">
+              <button class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded">
+                Profile
+              </button>
+              <div
+                class="absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden group-hover:block">
+                <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                  <a href="/my-complaints" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    role="menuitem">View My Complaints</a>
+                  <form action="/logout" method="POST">
+                    <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      role="menuitem">
+                      Logout
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            {% else %}
+            <a href="/login" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Login</a>
+            <a href="/signup" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded">Sign Up</a>
+            {% endif %}
+          </nav>
+        </div>
+        <div id="mobile-menu" class="hidden lg:hidden absolute top-full left-0 right-0 bg-blue-900 shadow-md z-10">
+          <ul class="py-4 px-6 space-y-4">
+            <li><a class="block hover:underline" href="#"><div class="gtranslate_wrapper"></div></a></li>
+            <li><a class="block hover:underline" href="home">Home</a></li>
+            <li>
+              <a class="block hover:underline" href="aboutus">About Us</a>
+            </li>
+            <li><a class="block hover:underline" href="#">Data Stats</a></li>
+            <li><a class="block hover:underline" href="faq">FAQs</a></li>
+            <li>
+              <a class="block hover:underline" href="contactus">Contact Us</a>
+            </li>
+            {% if request.session.get('access_token') %}
+            <li>
+              <a href="/my-complaints" class="block hover:underline">View My Complaints</a>
+            </li>
+            <li>
+              <form action="/logout" method="POST">
+                <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded w-full">
+                  Logout
+                </button>
+              </form>
+            </li>
+            {% else %}
+            <li>
+              <a href="/login"
+                class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded block text-center">Login</a>
+            </li>
+            <li>
+              <a href="/signup"
+                class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded block text-center">Sign Up</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </header>
+    <!-- Main Content -->
+    <main class="container mx-auto text-center py-16 px-6">
+      <h2 class="text-3xl font-bold text-blue-900 mb-4">
+        Learn About The Process
+      </h2>
+      <p class="text-gray-600 font-normal mb-12">
+        Understand how the road issue reporting and repair system works from submission to completion.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Video Tutorials -->
+        <div class="bg-white p-6 rounded-lg shadow-md flex flex-col">
+          <h3 class="text-xl font-bold text-blue-900 mb-4">
+            <i class="fas fa-video mr-2"></i>
+            Video Tutorials
+          </h3>
+          <p class="text-gray-600 font-normal mb-4">
+            Watch step-by-step guides on how to report issues
+          </p>
+          <ul class="text-left text-gray-600 font-normal mb-4">
+            <li class="mb-2">
+              <i class="fas fa-play-circle text-orange-500 mr-2"></i>
+              How to submit a road issue report
+            </li>
+            <li class="mb-2">
+              <i class="fas fa-play-circle text-orange-500 mr-2"></i>
+              Tips for accurate location selection
+            </li>
+            <li class="mb-2">
+              <i class="fas fa-play-circle text-orange-500 mr-2"></i>
+              Understanding priority assessment
+            </li>
+          </ul>
+          <div class="mt-auto">
+            <button class="bg-white border border-gray-300 text-blue-900 px-4 py-2 rounded hover:bg-gray-100">
+              Watch Videos
+            </button>
+          </div>
+        </div>
+
+        <!-- Documentation -->
+        <div class="bg-white p-6 rounded-lg shadow-md flex flex-col">
+          <h3 class="text-xl font-bold text-blue-900 mb-4">
+            <i class="fas fa-book mr-2"></i>
+            Documentation
+          </h3>
+          <p class="text-gray-600 font-normal mb-4">
+            Detailed guides and reference materials
+          </p>
+          <ul class="text-left text-gray-600 font-normal mb-4">
+            <li class="mb-2">
+              <i class="fas fa-file-alt text-orange-500 mr-2"></i>
+              Complete user guide for citizens
+            </li>
+            <li class="mb-2">
+              <i class="fas fa-file-alt text-orange-500 mr-2"></i>
+              Standards for road repair assessment
+            </li>
+            <li class="mb-2">
+              <i class="fas fa-file-alt text-orange-500 mr-2"></i>
+              FAQ: Most common queries answered
+            </li>
+          </ul>
+          <div class="mt-auto">
+            <button onclick="window.location.href='guides'" class="bg-white border border-gray-300 text-blue-900 px-4 py-2 rounded hover:bg-gray-100">
+              Browse Guides
+            </button>
+          </div>
+        </div>
+
+        <!-- Help & Support -->
+        <div class="bg-white p-6 rounded-lg shadow-md flex flex-col">
+          <h3 class="text-xl font-bold text-blue-900 mb-4">
+            <i class="fas fa-life-ring mr-2"></i>
+            Help & Support
+          </h3>
+          <p class="text-gray-600 font-normal mb-4">
+            Get assistance with your questions
+          </p>
+          <ul class="text-left text-gray-600 font-normal mb-4">
+            <li class="mb-2">
+              <i class="fas fa-phone-alt text-orange-500 mr-2"></i>
+              Contact our support team
+            </li>
+            <li class="mb-2">
+              <i class="fas fa-calendar-alt text-orange-500 mr-2"></i>
+              Schedule a guided walkthrough
+            </li>
+            <li class="mb-2">
+              <i class="fas fa-exclamation-circle text-orange-500 mr-2"></i>
+              Report issues with the platform
+            </li>
+          </ul>
+          <div class="mt-auto">
+            <button class="bg-white border border-gray-300 text-blue-900 px-4 py-2 rounded hover:bg-gray-100">
+              Get Help
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- footer -->
+
+    <footer class="bg-blue-900 text-white py-8">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+         <div>
+          <h3 class="text-lg font-bold mb-4">
+           Sadak Sathi Seva
+          </h3>
+          <p class="text-sm mb-4">
+           Ministry of Road Transport &amp; Highways
+          </p>
+          <p class="text-sm mb-4">
+           A Government of India initiative to empower citizens to report road issues and track their resolution.
+          </p>
+          <div class="flex space-x-4">
+           <a href="#">
+            <i class="fab fa-facebook-f">
+            </i>
+           </a>
+           <a href="#">
+            <i class="fab fa-twitter">
+            </i>
+           </a>
+           <a href="#">
+            <i class="fab fa-instagram">
+            </i>
+           </a>
+           <a href="#">
+            <i class="fab fa-youtube">
+            </i>
+           </a>
+          </div>
+         </div>
+         <div>
+          <h3 class="text-lg font-bold mb-4">
+           Quick Links
+          </h3>
+          <ul class="space-y-2">
+           <li>
+            <a class="hover:underline" href="home">
+             Home
+            </a>
+           </li>
+           <li>
+            <a class="hover:underline" href="aboutus">
+             About Us
+            </a>
+           </li>
+           <li>
+            <a class="hover:underline" href="trackstatus">
+             Track Status
+            </a>
+           </li>
+           <li>
+            <a class="hover:underline" href="FAQs">
+             FAQs
+            </a>
+           </li>
+           <li>
+            <a class="hover:underline" href="contactus">
+             Contact Us
+            </a>
+           </li>
+          </ul>
+         </div>
+         <div>
+          <h3 class="text-lg font-bold mb-4">
+           Resources
+          </h3>
+          <ul class="space-y-2">
+           <li>
+            <a class="hover:underline" href="#">
+             Reporting Guidelines
+            </a>
+           </li>
+           <li>
+            <a class="hover:underline" href="#">
+             Success Stories
+            </a>
+           </li>
+           <li>
+            <a class="hover:underline" href="#">
+             Statistics &amp; Reports
+            </a>
+           </li>
+           <li>
+            <a class="hover:underline" href="#">
+             Open Data
+            </a>
+           </li>
+           <li>
+            <a class="hover:underline" href="#">
+             Media Resources
+            </a>
+           </li>
+           <li>
+            <a class="hover:underline" href="#">
+             Downloads &amp; Forms
+            </a>
+           </li>
+          </ul>
+         </div>
+         <div>
+          <h3 class="text-lg font-bold mb-4">
+           Contact Us
+          </h3>
+          <p class="text-sm mb-4">
+           Ministry of Road Transport &amp; Highways, Transport Bhawan, Parliament Street, New Delhi - 110001
+          </p>
+          <p class="text-sm mb-4">
+           <i class="fas fa-phone-alt">
+           </i>
+           1800-XXX-XXXX (Toll Free)
+          </p>
+          <p class="text-sm">
+           <i class="fas fa-envelope">
+           </i>
+           support@sadaksathiseva.gov.in
+          </p>
+         </div>
+        </div>
+       </footer>
+     
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const checkBtn = document.getElementById('checkStatusBtn');
+            const complaintInput = document.getElementById('complaintInput');
+            const emergencyBtn = document.getElementById('reportEmergencyBtn');
+    
+            // Toggle mobile menu visibility
+            mobileMenuButton?.addEventListener('click', () => {
+                mobileMenu?.classList.toggle('hidden');
+            });        
+        });
+
+        const profileButton = document.querySelector('.group button');
+        const profileDropdown = document.querySelector('.group .absolute');
+
+        if (profileButton && profileDropdown) {
+        let isOpen = false;
+
+        profileButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (isOpen) {
+            profileDropdown.classList.add('hidden');
+            } else {
+            profileDropdown.classList.remove('hidden');
+            }
+            isOpen = !isOpen;
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!profileButton.contains(e.target) && !profileDropdown.contains(e.target) && !isOpen) {
+            profileDropdown.classList.add('hidden');
+            isOpen = false;
+            }
+        });
+        }
+    </script>
+    <script>window.gtranslateSettings = {"default_language":"en","languages":["en","hi","bn","mr","te","ta"],"wrapper_selector":".gtranslate_wrapper","flag_size":24,"alt_flags":{"en":"usa"}}</script>
+    <script src="https://cdn.gtranslate.net/widgets/latest/popup.js" defer></script>
+  </body>
+</html>

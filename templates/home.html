@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Home - Sadak Sathi Seva</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <style>
+        body {
+            font-family: "Roboto", sans-serif;
+        }
+
+        .group:hover .group-hover\:block,
+        .group-hover\:block:hover {
+            display: block;
+        }
+
+        #checkStatusBtn {
+            box-shadow: 0 0 10px rgba(66, 153, 225, 0.7);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        #checkStatusBtn:hover {
+            box-shadow: 0 0 20px rgba(66, 153, 225, 0.9);
+        }
+
+        #map {
+            height: 300px;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+    <!-- Page Content Container -->
+    <div id="mainContent">
+        <!-- Header Section -->
+        <header class="bg-blue-900 text-white relative">
+            <div class="container mx-auto flex justify-between items-center py-4 px-6">
+                <div class="flex items-center">
+                    <img alt="Sadak Sathi Seva Logo" class="mr-3 h-10 w-10" src="/images/logo.png" />
+                    <div>
+                        <h1 class="text-xl font-bold">Sadak Sathi Seva</h1>
+                        <p class="text-sm">Ministry of Road Transport &amp; Highways</p>
+                    </div>
+                </div>
+                <button id="mobile-menu-button" class="lg:hidden focus:outline-none">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <nav class="hidden lg:flex space-x-6">
+                    <a class="hover:underline" href="#"><div class="gtranslate_wrapper"></div></a>
+                    <a class="hover:underline" href="home">Home</a>
+                    <a class="hover:underline" href="aboutus">About Us</a>
+                    <a class="hover:underline" href="#">Data Stats</a>
+                    <a class="hover:underline" href="faq">FAQs</a>
+                    <a class="hover:underline" href="contactus">Contact Us</a>
+                    {% if request.session.get('access_token') %}
+                    <div class="relative inline-block text-left group">
+                        <button class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded">
+                            Profile
+                        </button>
+                        <div
+                            class="absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden group-hover:block">
+                            <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                                <a href="/my-complaints" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    role="menuitem">View My Complaints</a>
+                                <form action="/logout" method="POST">
+                                    <button type="submit"
+                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                        role="menuitem">
+                                        Logout
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <a href="/login" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Login</a>
+                    <a href="/signup" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded">Sign Up</a>
+                    {% endif %}
+                </nav>
+            </div>
+            <div id="mobile-menu" class="hidden lg:hidden absolute top-full left-0 right-0 bg-blue-900 shadow-md z-10">
+                <ul class="py-4 px-6 space-y-4">
+                    <li><a class="block hover:underline" href="#"><div class="gtranslate_wrapper"></div></a></li>
+                    <li><a class="block hover:underline" href="home">Home</a></li>
+                    <li>
+                        <a class="block hover:underline" href="aboutus">About Us</a>
+                    </li>
+                    <li><a class="block hover:underline" href="#">Data Stats</a></li>
+                    <li><a class="block hover:underline" href="faq">FAQs</a></li>
+                    <li>
+                        <a class="block hover:underline" href="contactus">Contact Us</a>
+                    </li>
+                    {% if request.session.get('access_token') %}
+                    <li>
+                        <a href="/my-complaints" class="block hover:underline">View My Complaints</a>
+                    </li>
+                    <li>
+                        <form action="/logout" method="POST">
+                            <button type="submit"
+                                class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded w-full">
+                                Logout
+                            </button>
+                        </form>
+                    </li>
+                    {% else %}
+                    <li>
+                        <a href="/login"
+                            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded block text-center">Login</a>
+                    </li>
+                    <li>
+                        <a href="/signup"
+                            class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded block text-center">Sign
+                            Up</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="bg-white py-12">
+            <div class="container mx-auto flex flex-col md:flex-row items-center justify-between">
+                <!-- Left content -->
+                <div class="text-left md:w-1/2">
+                  <h2 class="text-4xl font-bold text-blue-900">
+                    Better Roads, <span class="text-orange-500">Better India</span>
+                  </h2>
+                  <p class="text-gray-600 mt-4">
+                    Report road issues, track repair progress, and help build a stronger infrastructure for our nation.
+                  </p>
+                  <div class="mt-6 flex justify-left space-x-4">
+                    <button id="reportIssueBtn" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded">
+                        Report Issue
+                    </button>
+                    <button class="border border-blue-900 text-blue-900 px-6 py-3 rounded" id="checkStatusBtn"
+                        onclick="window.location.href='trackstatus'">
+                        Check Status
+                    </button>
+                    <button class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded" id="streetViewBtn"
+                        onclick="window.location.href='streetview'">
+                        Street View
+                    </button>
+                </div>
+                  <div class="mt-6 flex justify-left items-center space-x-2">
+                    <img alt="User 1" class="rounded-full h-8 w-8" src="https://placehold.co/30x30" />
+                    <img alt="User 2" class="rounded-full h-8 w-8" src="https://placehold.co/30x30" />
+                    <img alt="User 3" class="rounded-full h-8 w-8" src="https://placehold.co/30x30" />
+                    <p class="text-gray-600">
+                      Join <span class="font-bold">5,000+</span> citizens in improving our roads
+                    </p>
+                  </div>
+                </div>
+            
+                <!-- Right content: Image Carousel -->
+                <div class="mt-8 mx-4 mb-8 md:mt-0 md:w-1/2 overflow-hidden rounded-lg shadow-lg">
+                  <div class="carousel flex transition-transform duration-700 ease-in-out" id="carouselImages">
+                    <img src="/images/AZADI.png" class="w-full flex-shrink-0" />
+                    <img src="/images/image2 (2).jpg" class="w-full flex-shrink-0" />
+                    <img src="/images/image3 (1).webp" class="w-full flex-shrink-0" />
+                    <img src="/images/image4.jpeg" class="w-full flex-shrink-0" />
+                    <img src="/images/image5.jpg" class="w-full flex-shrink-0" />
+                  </div>
+                </div>
+              </div>
+        </section>
+
+        <!-- How it Works Section -->
+        <section class="bg-gray-50 py-12">
+            <div class="container mx-auto">
+                <h3 class="text-2xl font-bold text-center text-blue-900">
+                    How It Works
+                </h3>
+                <p class="text-center text-gray-600 mt-2">
+                    Follow these simple steps to contribute to better roads.
+                </p>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white p-6 rounded shadow hover:shadow-lg transition transform hover:-translate-y-1">
+                        <i class="fas fa-exclamation-circle text-blue-900 text-3xl mb-4"></i>
+                        <h4 class="text-xl font-bold text-center text-blue-900">
+                            Report Issue
+                        </h4>
+                        <p class="text-center text-gray-600 mt-2">
+                            Submit details about the road issue with location and photos.
+                        </p>
+                        <a href="#" id="reportNowLink"
+                            class="text-orange-500 hover:underline block text-center mt-4">Report Now</a>
+                    </div>
+                    <!-- Other steps follow as-is... -->
+                    <div class="bg-white p-6 rounded shadow hover:shadow-lg transition transform hover:-translate-y-1">
+                        <i class="fas fa-check-circle text-orange-500 text-3xl mb-4"></i>
+                        <h4 class="text-xl font-bold text-center text-blue-900">
+                            Verification
+                        </h4>
+                        <p class="text-center text-gray-600 mt-2">
+                            Our team verifies and assigns the issue.
+                        </p>
+                        <a class="text-orange-500 hover:underline block text-center mt-4" href="verifypage">Learn About
+                            Process</a>
+                    </div>
+                    <div class="bg-white p-6 rounded shadow hover:shadow-lg transition transform hover:-translate-y-1">
+                        <i class="fas fa-tools text-green-500 text-3xl mb-4"></i>
+                        <h4 class="text-xl font-bold text-center text-blue-900">
+                            Repair Work
+                        </h4>
+                        <p class="text-center text-gray-600 mt-2">
+                            Repair team fixes the issue based on priority.
+                        </p>
+                        <a class="text-orange-500 hover:underline block text-center mt-4" href="#">View Priority
+                            Metrics</a>
+                    </div>
+                    <div class="bg-white p-6 rounded shadow hover:shadow-lg transition transform hover:-translate-y-1">
+                        <i class="fas fa-clipboard-check text-purple-500 text-3xl mb-4"></i>
+                        <h4 class="text-xl font-bold text-center text-blue-900">
+                            Accident Predictor
+                        </h4>
+                        <p class="text-center text-gray-600 mt-2">
+                            Pick a Location to get the accident prediction.
+                        </p>
+                        <a class="text-orange-500 hover:underline block text-center mt-4" href="accident-risk-map">Predict</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- More content can continue... -->
+        <section class="bg-white py-12">
+            <div class="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-gray-50 p-6 rounded shadow hover:shadow-lg transition transform hover:-translate-y-1">
+                    <h3 class="text-2xl font-bold text-blue-900 mb-2">
+                        Check Your Complaint Status
+                    </h3>
+                    <p class="text-gray-600 mb-4">
+                        Enter your complaint ID to check status.
+                    </p>
+                    <div class="flex">
+                        <input id="complaintInput" class="border border-gray-300 p-2 rounded-l w-full"
+                            placeholder="Enter Complaint ID" type="number" />
+                        <button id="checkStatusBtn" class="bg-blue-900 text-white px-4 py-2 rounded-r">
+                            Check Status
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 p-6 rounded shadow hover:shadow-lg transition transform hover:-translate-y-1">
+                    <h3 class="text-2xl font-bold text-blue-900 mb-2">
+                        Emergency Reporting
+                    </h3>
+                    <p class="text-gray-600 mb-4">
+                        Report dangerous potholes, fallen trees, or road cave-ins.
+                    </p>
+                    <button id="reportEmergencyBtn" class="bg-blue-900 text-white px-4 py-2 rounded w-full">
+                        Report Emergency
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-gray-50 py-12">
+            <div class="container mx-auto text-center">
+                <h3 class="text-2xl font-bold text-blue-900">Making a Difference</h3>
+                <p class="text-gray-600 mt-2">
+                    See the real impact we're making together.
+                </p>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white p-6 rounded shadow hover:shadow-lg transition transform hover:-translate-y-1">
+                        <h4 class="text-3xl font-bold text-blue-900">14,382</h4>
+                        <p class="text-gray-600 mt-2">Issues Reported</p>
+                        <p class="text-gray-400">From 22 states and UTs</p>
+                    </div>
+                    <div class="bg-white p-6 rounded shadow hover:shadow-lg transition transform hover:-translate-y-1">
+                        <h4 class="text-3xl font-bold text-orange-500">9,647</h4>
+                        <p class="text-gray-600 mt-2">In Progress</p>
+                        <p class="text-gray-400">Currently being fixed</p>
+                    </div>
+                    <div class="bg-white p-6 rounded shadow hover:shadow-lg transition transform hover:-translate-y-1">
+                        <h4 class="text-3xl font-bold text-green-500">12,506</h4>
+                        <p class="text-gray-600 mt-2">Issues Resolved</p>
+                        <p class="text-gray-400">Completed repairs</p>
+                    </div>
+                    <div class="bg-white p-6 rounded shadow hover:shadow-lg transition transform hover:-translate-y-1">
+                        <h4 class="text-3xl font-bold text-purple-500">87%</h4>
+                        <p class="text-gray-600 mt-2">Satisfaction Rate</p>
+                        <p class="text-gray-400">Based on user feedback</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="bg-blue-900 text-white py-12">
+            <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div>
+                    <h4 class="text-xl font-bold">Sadak Sathi Seva</h4>
+                    <p class="mt-2">Ministry of Road Transport &amp; Highways</p>
+                    <p class="mt-2">A Government of India initiative.</p>
+                    <div class="mt-4 flex space-x-4">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-xl font-bold">Quick Links</h4>
+                    <ul class="mt-2 space-y-2">
+                        <li><a class="hover:underline" href="home">Home</a></li>
+                        <li><a class="hover:underline" href="aboutus">About Us</a></li>
+                        <li><a class="hover:underline" href="#">Report Issue</a></li>
+                        <li>
+                            <a class="hover:underline" href="trackstatus">Track Status</a>
+                        </li>
+                        <li><a class="hover:underline" href="#">FAQs</a></li>
+                        <li>
+                            <a class="hover:underline" href="contactus">Contact Us</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xl font-bold">Resources</h4>
+                    <ul class="mt-2 space-y-2">
+                        <li>
+                            <a class="hover:underline" href="#">Reporting Guidelines</a>
+                        </li>
+                        <li><a class="hover:underline" href="#">Success Stories</a></li>
+                        <li>
+                            <a class="hover:underline" href="#">Statistics &amp; Reports</a>
+                        </li>
+                        <li><a class="hover:underline" href="#">Open Data</a></li>
+                        <li><a class="hover:underline" href="#">Media Resources</a></li>
+                        <li>
+                            <a class="hover:underline" href="#">Downloads &amp; Forms</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xl font-bold">Contact Us</h4>
+                    <p class="mt-2">
+                        Transport Bhavan, Parliament Street, New Delhi - 110001
+                    </p>
+                    <p class="mt-2">1800-XXX-XXXX (Toll Free)</p>
+                    <p class="mt-2">support@sadaksathiseva.gov.in</p>
+                </div>
+            </div>
+            <div class="mt-12 text-center text-gray-400">
+                <p>
+                    © 2023 Sadak Sathi Seva, Government of India. All Rights Reserved.
+                </p>
+                <div class="mt-2 space-x-4">
+                    <a class="hover:underline" href="#">Terms of Use</a>
+                    <a class="hover:underline" href="#">Privacy Policy</a>
+                    <a class="hover:underline" href="#">Accessibility</a>
+                    <a class="hover:underline" href="#">Sitemap</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Reporting Form Template -->
+    <template id="reportFormTemplate">
+        <div class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-3xl">
+                <div class="flex justify-between items-center mb-4">
+                    <h1 class="text-2xl font-bold">Report a Road Issue</h1>
+                    <button id="closeReportForm" class="text-gray-500 text-xl">&times;</button>
+                </div>
+                <form id="reportForm" enctype="multipart/form-data">
+                    <div class="mb-4">
+                        <label for="issueType" class="block text-gray-700 font-bold mb-2">Issue Type</label>
+                        <select id="issueType" name="issueType" class="w-full p-2 border border-gray-300 rounded">
+                            <option value="Pothole">Pothole</option>
+                            <option value="Broken Pavement">Broken Pavement</option>
+                            <option value="Faded Markings">Faded Markings</option>
+                            <option value="Obstruction">Obstruction</option>
+                            <option value="Water Logging">Water Logging</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="location" class="block text-gray-700 font-bold mb-2">Location</label>
+                        <input type="text" id="location" name="location" placeholder="Enter address or click on map"
+                            class="w-full p-2 border border-gray-300 rounded mb-2">
+                        <div id="map" class="w-full h-64 border border-gray-300 rounded" style="min-height: 300px">
+                        </div>
+                        <input type="hidden" id="latitude" name="latitude" value="0">
+                        <input type="hidden" id="longitude" name="longitude" value="0">
+                    </div>
+                    <div class="mb-4">
+                        <label for="description" class="block text-gray-700 font-bold mb-2">Description</label>
+                        <textarea id="description" name="description" placeholder="Provide details about the issue"
+                            class="w-full p-2 border border-gray-300 rounded"></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label for="photo" class="block text-gray-700 font-bold mb-2">Upload Photo</label>
+
+                        <!-- File input with camera capture for mobile -->
+                        <input type="file" id="photo" name="photo" accept="image/*" capture="environment"
+                            class="w-full p-2 border border-gray-300 rounded">
+
+                        <!-- Camera controls -->
+                        <div class="mt-2 flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
+                            <button type="button" id="captureBtn"
+                                class="bg-green-500 hover:bg-green-600 text-white p-2 rounded">
+                                <i class="fas fa-camera mr-1"></i> Take Photo
+                            </button>
+                            <button type="button" id="switchCameraBtn"
+                                class="bg-gray-500 hover:bg-gray-600 text-white p-2 rounded">
+                                <i class="fas fa-sync mr-1"></i> Switch Camera
+                            </button>
+                        </div>
+
+                        <!-- Preview container -->
+                        <div class="mt-2">
+                            <video id="cameraPreview" class="w-full h-64 border border-gray-300 rounded hidden"></video>
+                            <canvas id="photoCanvas" class="w-full border border-gray-300 rounded hidden"></canvas>
+                            <img id="photoPreview" class="w-full h-auto border border-gray-300 rounded mt-2 hidden"
+                                alt="Photo preview">
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white p-2 rounded">
+                        Submit Report
+                    </button>
+                </form>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const mobileMenuButton = document.getElementById("mobile-menu-button");
+            const mobileMenu = document.getElementById("mobile-menu");
+            const reportBtn = document.getElementById("reportIssueBtn");
+            const reportNowLink = document.getElementById("reportNowLink");
+            const mainContent = document.getElementById("mainContent");
+            const reportFormTemplate = document.getElementById("reportFormTemplate");
+            
+            // Toggle mobile menu
+            mobileMenuButton?.addEventListener("click", () => {
+                mobileMenu?.classList.toggle("hidden");
+            });
+
+            // Camera variables
+            let stream = null;
+            let facingMode = "environment"; // Start with rear camera
+            let imageBlob = null;
+
+            const showReportForm = () => {
+                mainContent.innerHTML = "";
+                const form = reportFormTemplate.content.cloneNode(true);
+                mainContent.appendChild(form);
+
+                // Initialize map after container is visible
+                const mapContainer = document.getElementById("map");
+                var map = L.map("map");
+                map.setView([20.5937, 78.9629], 5); // Default center of India
+
+                L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                    maxZoom: 19,
+                    attribution:
+                        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                }).addTo(map);
+
+                // Try to get user's location
+                navigator.geolocation.getCurrentPosition(
+                    function success(pos) {
+                        const lat = pos.coords.latitude;
+                        const lng = pos.coords.longitude;
+                        const accuracy = pos.coords.accuracy;
+
+                        // Set hidden form values
+                        document.getElementById("latitude").value = lat;
+                        document.getElementById("longitude").value = lng;
+
+                        // Add marker for user location
+                        let marker = L.marker([lat, lng]).addTo(map);
+                        let circle = L.circle([lat, lng], { radius: accuracy }).addTo(map);
+
+                        // Center and zoom map to user location
+                        map.setView([lat, lng], 13);
+
+                        // When map is clicked, update marker position
+                        map.on("click", function (e) {
+                            // Remove existing marker
+                            map.eachLayer(function (layer) {
+                                if (layer instanceof L.Marker) {
+                                    map.removeLayer(layer);
+                                }
+                            });
+
+                            // Add new marker at clicked position
+                            const newLat = e.latlng.lat;
+                            const newLng = e.latlng.lng;
+                            marker = L.marker([newLat, newLng]).addTo(map);
+
+                            // Update form values
+                            document.getElementById("latitude").value = newLat;
+                            document.getElementById("longitude").value = newLng;
+                        });
+                    },
+                    function error(err) {
+                        if (err.code === 1) {
+                            alert("Please allow Geolocation access");
+                        } else {
+                            alert("Cannot get current location");
+                        }
+
+                        // Set up map click even without user location
+                        map.on("click", function (e) {
+                            map.eachLayer(function (layer) {
+                                if (layer instanceof L.Marker) {
+                                    map.removeLayer(layer);
+                                }
+                            });
+
+                            const newLat = e.latlng.lat;
+                            const newLng = e.latlng.lng;
+                            L.marker([newLat, newLng]).addTo(map);
+
+                            document.getElementById("latitude").value = newLat;
+                            document.getElementById("longitude").value = newLng;
+                        });
+                    }
+                );
+
+                // Camera related elements
+                const captureBtn = document.getElementById("captureBtn");
+                const switchCameraBtn = document.getElementById("switchCameraBtn");
+                const cameraPreview = document.getElementById("cameraPreview");
+                const photoCanvas = document.getElementById("photoCanvas");
+                const photoPreview = document.getElementById("photoPreview");
+                const photoInput = document.getElementById("photo");
+
+                // Check if device has camera capabilities
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    // Handle camera capture button
+                    captureBtn.addEventListener("click", () => {
+                        if (stream) {
+                            // If the camera is already open, take a photo
+                            takePhoto();
+                        } else {
+                            // Otherwise, open the camera
+                            openCamera();
+                        }
+                    });
+
+                    // Handle switch camera button
+                    switchCameraBtn.addEventListener("click", () => {
+                        if (stream) {
+                            // Toggle between front and rear camera
+                            facingMode = facingMode === "user" ? "environment" : "user";
+                            // Close current stream
+                            stopCamera();
+                            // Reopen with new camera
+                            openCamera();
+                        }
+                    });
+                } else {
+                    // Hide camera buttons if not supported
+                    captureBtn.style.display = "none";
+                    switchCameraBtn.style.display = "none";
+                }
+
+                // Function to open camera
+                function openCamera() {
+                    // Get user media with current facing mode
+                    navigator.mediaDevices
+                        .getUserMedia({
+                            video: { facingMode: facingMode },
+                            audio: false,
+                        })
+                        .then((mediaStream) => {
+                            stream = mediaStream;
+                            cameraPreview.srcObject = stream;
+                            cameraPreview.classList.remove("hidden");
+                            cameraPreview.play();
+
+                            // Change the capture button text
+                            captureBtn.innerHTML = '<i class="fas fa-camera mr-1"></i> Take Photo';
+                        })
+                        .catch((err) => {
+                            console.error("Error accessing camera:", err);
+                            alert("Could not access camera. Please check permissions.");
+                        });
+                }
+
+                // Function to stop camera stream
+                function stopCamera() {
+                    if (stream) {
+                        stream.getTracks().forEach((track) => {
+                            track.stop();
+                        });
+                        stream = null;
+                        cameraPreview.classList.add("hidden");
+
+                        // Change the capture button text back
+                        captureBtn.innerHTML = '<i class="fas fa-camera mr-1"></i> Take Photo';
+                    }
+                }
+
+                // Function to take photo
+                function takePhoto() {
+                    if (!stream) return;
+
+                    // Get canvas context
+                    const context = photoCanvas.getContext("2d");
+
+                    // Set canvas dimensions to match video
+                    photoCanvas.width = cameraPreview.videoWidth;
+                    photoCanvas.height = cameraPreview.videoHeight;
+
+                    // Draw video frame to canvas
+                    context.drawImage(
+                        cameraPreview,
+                        0,
+                        0,
+                        photoCanvas.width,
+                        photoCanvas.height
+                    );
+
+                    // Convert canvas to blob
+                    photoCanvas.toBlob((blob) => {
+                        imageBlob = blob;
+
+                        // Create a preview
+                        const imageUrl = URL.createObjectURL(blob);
+                        photoPreview.src = imageUrl;
+                        photoPreview.classList.remove("hidden");
+
+                        // Create a file object for the form
+                        const fileName = `photo_${Date.now()}.jpg`;
+                        const photoFile = new File([blob], fileName, { type: "image/jpeg" });
+
+                        // Create a DataTransfer object to set the file input value
+                        const dataTransfer = new DataTransfer();
+                        dataTransfer.items.add(photoFile);
+                        photoInput.files = dataTransfer.files;
+
+                        // Stop the camera after taking photo
+                        stopCamera();
+                    }, "image/jpeg", 0.95);
+                }
+
+                // When user selects a file manually, show preview
+                photoInput.addEventListener("change", function () {
+                    if (this.files && this.files[0]) {
+                        const file = this.files[0];
+                        const reader = new FileReader();
+
+                        reader.onload = function (e) {
+                            photoPreview.src = e.target.result;
+                            photoPreview.classList.remove("hidden");
+                        }
+
+                        reader.readAsDataURL(file);
+
+                        // If camera was open, close it
+                        stopCamera();
+                    }
+                });
+
+                // Close form button
+                const closeBtn = document.getElementById("closeReportForm");
+                closeBtn?.addEventListener("click", () => {
+                    // Stop camera if active
+                    stopCamera();
+                    location.reload();
+                });
+
+                // Form submission
+                const formElement = document.getElementById("reportForm");
+                formElement?.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+
+                    // Basic validation
+                    const issueType = document.getElementById("issueType").value;
+                    const location = document.getElementById("location").value;
+                    const description = document.getElementById("description").value;
+
+                    if (!location || !description) {
+                        alert("Please fill in all required fields");
+                        return;
+                    }
+
+                    const formData = new FormData(formElement);
+                    try {
+                        const response = await fetch("/report", {
+                            method: "POST",
+                            body: formData,
+                        });
+
+                        const responseData = await response.json();
+
+                        if (response.ok) {
+                            alert(
+                                "Report submitted successfully! Your report ID is: " +
+                                responseData.report_id
+                            );
+                            location.reload();
+                        } else {
+                            alert(responseData.message || "Error submitting report");
+                        }
+                    } catch (error) {
+                        console.error("Error:", error);
+                        alert("Error submitting report");
+                    }
+                });
+            };
+
+            // Event listeners for showing report form
+            reportBtn?.addEventListener("click", showReportForm);
+            reportNowLink?.addEventListener("click", (e) => {
+                e.preventDefault();
+                showReportForm();
+            });
+
+            // Emergency report button
+            const reportEmergencyBtn = document.getElementById("reportEmergencyBtn");
+            reportEmergencyBtn?.addEventListener("click", showReportForm);
+        });
+
+        const profileButton = document.querySelector('.group button');
+        const profileDropdown = document.querySelector('.group .absolute');
+
+        if (profileButton && profileDropdown) {
+            let isOpen = false;
+
+            profileButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (isOpen) {
+                    profileDropdown.classList.add('hidden');
+                } else {
+                    profileDropdown.classList.remove('hidden');
+                }
+                isOpen = !isOpen;
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!profileButton.contains(e.target) && !profileDropdown.contains(e.target) && !isOpen) {
+                    profileDropdown.classList.add('hidden');
+                    isOpen = false;
+                }
+            });
+        }
+
+    </script>
+    <script src="https://cdn.botpress.cloud/webchat/v2.3/inject.js"></script>
+    <script src="https://files.bpcontent.cloud/2025/04/14/15/20250414151741-ID8A8ICN.js"></script>
+    <script>window.gtranslateSettings = {"default_language":"en","languages":["en","hi","bn","mr","te","ta"],"wrapper_selector":".gtranslate_wrapper","flag_size":24,"alt_flags":{"en":"usa"}}</script>
+    <script src="https://cdn.gtranslate.net/widgets/latest/popup.js" defer></script>
+    <script>
+        let currentSlide = 0;
+        const carousel = document.getElementById('carouselImages');
+        const totalSlides = carousel.children.length;
+    
+        function updateCarousel() {
+          carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+    
+        setInterval(() => {
+          currentSlide = (currentSlide + 1) % totalSlides;
+          updateCarousel();
+        }, 3000); 
+      </script>
+</body>
+
+</html>

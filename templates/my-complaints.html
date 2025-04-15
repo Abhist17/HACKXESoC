@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>My Complaints - Sadak Sathi Seva</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            font-family: "Roboto", sans-serif;
+        }
+
+        .group:hover .group-hover\:block {
+            display: block;
+        }
+
+        .complaint-card {
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .complaint-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .status-pending {
+            background-color: #FEF3C7;
+            color: #92400E;
+        }
+
+        .status-in-progress {
+            background-color: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .status-resolved {
+            background-color: #D1FAE5;
+            color: #065F46;
+        }
+
+        .status-rejected {
+            background-color: #FEE2E2;
+            color: #B91C1C;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+    <!-- Header Section -->
+    <header class="bg-blue-900 text-white relative">
+        <div class="container mx-auto flex justify-between items-center py-4 px-6">
+            <div class="flex items-center">
+                <img alt="Sadak Sathi Seva Logo" class="mr-3 h-10 w-10" src="https://placehold.co/50x50" />
+                <div>
+                    <h1 class="text-xl font-bold">Sadak Sathi Seva</h1>
+                    <p class="text-sm">Ministry of Road Transport &amp; Highways</p>
+                </div>
+            </div>
+            <button id="mobile-menu-button" class="lg:hidden focus:outline-none">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            <nav class="hidden lg:flex space-x-6">
+                <a class="hover:underline" href="#"><div class="gtranslate_wrapper"></div></a>
+                <a class="hover:underline" href="home">Home</a>
+                <a class="hover:underline" href="aboutus">About Us</a>
+                <a class="hover:underline" href="#">Data Stats</a>
+                <a class="hover:underline" href="#">FAQs</a>
+                <a class="hover:underline" href="contactus">Contact Us</a>
+                {% if request.session.get('access_token') %}
+                <div class="relative inline-block text-left group">
+                    <button class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded">
+                        Profile
+                    </button>
+                    <div
+                        class="absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden group-hover:block">
+                        <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                            <a href="/my-complaints"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-bold"
+                                role="menuitem">View My Complaints</a>
+                            <form action="/logout" method="POST">
+                                <button type="submit"
+                                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    role="menuitem">
+                                    Logout
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <a href="/login" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Login</a>
+                <a href="/signup" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded">Sign Up</a>
+                {% endif %}
+            </nav>
+        </div>
+        <div id="mobile-menu" class="hidden lg:hidden absolute top-full left-0 right-0 bg-blue-900 shadow-md z-10">
+            <ul class="py-4 px-6 space-y-4">
+                <li><a class="block hover:underline" href="#"><div class="gtranslate_wrapper"></div></a></li>
+                <li><a class="block hover:underline" href="home">Home</a></li>
+                <li><a class="block hover:underline" href="aboutus">About Us</a></li>
+                <li><a class="block hover:underline" href="#">Data Stats</a></li>
+                <li><a class="block hover:underline" href="#">FAQs</a></li>
+                <li><a class="block hover:underline" href="contactus">Contact Us</a></li>
+                {% if request.session.get('access_token') %}
+                <li><a href="/my-complaints" class="block hover:underline font-bold">View My Complaints</a></li>
+                <li>
+                    <form action="/logout" method="POST">
+                        <button type="submit"
+                            class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded w-full">
+                            Logout
+                        </button>
+                    </form>
+                </li>
+                {% else %}
+                <li><a href="/login"
+                        class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded block text-center">Login</a>
+                </li>
+                <li><a href="/signup"
+                        class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded block text-center">Sign
+                        Up</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto py-8 px-4">
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h1 class="text-3xl font-bold text-blue-900 mb-2">My Complaints</h1>
+            <p class="text-gray-600">Track and manage all your submitted road issue reports</p>
+        </div>
+
+        {% if reports %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for report_id, report in reports.items() %}
+            <div class="bg-white rounded-lg shadow-md overflow-hidden complaint-card">
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-blue-900">{{ report.issue_type }}</h3>
+                            <p class="text-gray-600 text-sm">ID: {{ report.id }}</p>
+                        </div>
+                        <div
+                            class="{% if report.status == 'pending' %}status-pending{% elif report.status == 'in_progress' %}status-in-progress{% elif report.status == 'resolved' %}status-resolved{% else %}status-rejected{% endif %} px-3 py-1 rounded-full text-sm font-medium">
+                            {{ report.status|capitalize }}
+                        </div>
+                    </div>
+                    
+
+                    <div class="mb-3">
+                        <p class="text-gray-700"><i class="fas fa-map-marker-alt text-red-500 mr-1"></i> {{
+                            report.location }}</p>
+                        <p class="text-gray-500 text-sm">Lat: {{ report.latitude }}, Long: {{ report.longitude }}</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <h4 class="font-semibold text-gray-700 mb-1">Description:</h4>
+                        <p class="text-gray-600">{{ report.description }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <h4 class="font-semibold text-gray-700 mb-1">Community Feedback:</h4>
+                        <div class="flex items-center mt-1">
+                            <div class="flex items-center text-green-600">
+                                <i class="fas fa-thumbs-up mr-1"></i>
+                                <span>{{ report.get('upvote_count', 0) }}</span>
+                            </div>
+                            <div class="flex items-center text-red-600 ml-4">
+                                <i class="fas fa-thumbs-down mr-1"></i>
+                                <span>{{ report.get('downvote_count', 0) }}</span>
+                            </div>
+                            <div class="ml-4">
+                                <span class="text-gray-600">Score:</span>
+                                <span class="font-medium {% if report.get('vote_score', 0) > 0 %}text-green-600{% elif report.get('vote_score', 0) < 0 %}text-red-600{% else %}text-gray-600{% endif %}">
+                                    {{ report.get('vote_score', 0) }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    {% if report.photo %}
+                    <div class="mb-3">
+                        <h4 class="font-semibold text-gray-700 mb-1">Photo:</h4>
+                        <div class="bg-gray-100 p-2 rounded">
+                            {% if report.photo == "photo_uploaded" %}
+                            <img src="/api/placeholder/400/200" alt="Report photo" class="w-full h-auto rounded" />
+                            {% else %}
+                            <p class="text-gray-500 text-sm">Photo not available</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="text-gray-500 text-sm mb-4">
+                        <p>Reported on: {{ report.created_at.split('T')[0] }}</p>
+                        <p>Last updated: {{ report.updated_at.split('T')[0] }}</p>
+                    </div>
+
+                    <form action="/trackstatus" method="POST">
+                        <input type="hidden" name="report_id" value="{{ report.id }}">
+                        <button type="submit"
+                            class="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded flex items-center justify-center">
+                            <i class="fas fa-search-location mr-2"></i> Check Status
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="bg-white rounded-lg shadow-md p-8 text-center">
+            <div class="text-6xl text-gray-300 mb-4">
+                <i class="fas fa-clipboard-list"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-700 mb-2">No Complaints Found</h2>
+            <p class="text-gray-600 mb-6">You haven't submitted any road issue reports yet.</p>
+            <a href="/" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded inline-block">
+                Report an Issue Now
+            </a>
+        </div>
+        {% endif %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-blue-900 text-white py-12 mt-12">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4">
+            <div>
+                <h4 class="text-xl font-bold">Sadak Sathi Seva</h4>
+                <p class="mt-2">Ministry of Road Transport &amp; Highways</p>
+                <p class="mt-2">A Government of India initiative.</p>
+                <div class="mt-4 flex space-x-4">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold">Quick Links</h4>
+                <ul class="mt-2 space-y-2">
+                    <li><a class="hover:underline" href="home">Home</a></li>
+                    <li><a class="hover:underline" href="aboutus">About Us</a></li>
+                    <li><a class="hover:underline" href="#">Report Issue</a></li>
+                    <li><a class="hover:underline" href="trackstatus">Track Status</a></li>
+                    <li><a class="hover:underline" href="#">FAQs</a></li>
+                    <li><a class="hover:underline" href="contactus">Contact Us</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold">Resources</h4>
+                <ul class="mt-2 space-y-2">
+                    <li><a class="hover:underline" href="#">Reporting Guidelines</a></li>
+                    <li><a class="hover:underline" href="#">Success Stories</a></li>
+                    <li><a class="hover:underline" href="#">Statistics &amp; Reports</a></li>
+                    <li><a class="hover:underline" href="#">Open Data</a></li>
+                    <li><a class="hover:underline" href="#">Media Resources</a></li>
+                    <li><a class="hover:underline" href="#">Downloads &amp; Forms</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold">Contact Us</h4>
+                <p class="mt-2">Transport Bhavan, Parliament Street, New Delhi - 110001</p>
+                <p class="mt-2">1800-XXX-XXXX (Toll Free)</p>
+                <p class="mt-2">support@sadaksathiseva.gov.in</p>
+            </div>
+        </div>
+        <div class="mt-12 text-center text-gray-400">
+            <p>© 2023 Sadak Sathi Seva, Government of India. All Rights Reserved.</p>
+            <div class="mt-2 space-x-4">
+                <a class="hover:underline" href="#">Terms of Use</a>
+                <a class="hover:underline" href="#">Privacy Policy</a>
+                <a class="hover:underline" href="#">Accessibility</a>
+                <a class="hover:underline" href="#">Sitemap</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const mobileMenuButton = document.getElementById("mobile-menu-button");
+            const mobileMenu = document.getElementById("mobile-menu");
+
+            // Toggle mobile menu
+            mobileMenuButton?.addEventListener("click", () => {
+                mobileMenu?.classList.toggle("hidden");
+            });
+
+            // Profile dropdown functionality
+            const profileButton = document.querySelector('.group button');
+            const profileDropdown = document.querySelector('.group .absolute');
+
+            if (profileButton && profileDropdown) {
+                let isOpen = false;
+
+                profileButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (isOpen) {
+                        profileDropdown.classList.add('hidden');
+                    } else {
+                        profileDropdown.classList.remove('hidden');
+                    }
+                    isOpen = !isOpen;
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!profileButton.contains(e.target) && !profileDropdown.contains(e.target) && !isOpen) {
+                        profileDropdown.classList.add('hidden');
+                        isOpen = false;
+                    }
+                });
+            }
+        });
+    </script>
+    <script>window.gtranslateSettings = {"default_language":"en","languages":["en","hi","bn","mr","te","ta"],"wrapper_selector":".gtranslate_wrapper","flag_size":24,"alt_flags":{"en":"usa"}}</script>
+    <script src="https://cdn.gtranslate.net/widgets/latest/popup.js" defer></script>
+</body>
+
+</html>

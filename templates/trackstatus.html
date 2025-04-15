@@ -1,0 +1,510 @@
+<html>
+
+<head>
+    <title>
+        Track Issue Status - Sadak Sathi Seva
+    </title>
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+</head>
+
+<body class="bg-gray-100 flex flex-col min-h-screen">
+    <!-- Navbar -->
+    <header class="bg-blue-900 text-white relative">
+        <div class="container mx-auto flex justify-between items-center py-4 px-6">
+            <div class="flex items-center">
+                <img alt="Sadak Sathi Seva Logo" class="mr-3 h-10 w-10" src="https://placehold.co/50x50" />
+                <div>
+                    <h1 class="text-xl font-bold">Sadak Sathi Seva</h1>
+                    <p class="text-sm">Ministry of Road Transport &amp; Highways</p>
+                </div>
+            </div>
+            <button id="mobile-menu-button" class="lg:hidden focus:outline-none">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            <nav class="hidden lg:flex space-x-6">
+                <a class="hover:underline" href="#"><div class="gtranslate_wrapper"></div></a>
+                <a class="hover:underline" href="home">Home</a>
+                <a class="hover:underline" href="aboutus">About Us</a>
+                <a class="hover:underline" href="#">Data Stats</a>
+                <a class="hover:underline" href="faq">FAQs</a>
+                <a class="hover:underline" href="contactus">Contact Us</a>
+                {% if request.session.get('access_token') %}
+                <div class="relative inline-block text-left group">
+                    <button class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded">
+                        Profile
+                    </button>
+                    <div
+                        class="absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden group-hover:block">
+                        <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                            <a href="/my-complaints" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                role="menuitem">View My Complaints</a>
+                            <form action="/logout" method="POST">
+                                <button type="submit"
+                                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    role="menuitem">
+                                    Logout
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <a href="/login" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Login</a>
+                <a href="/signup" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded">Sign Up</a>
+                {% endif %}
+            </nav>
+        </div>
+        <div id="mobile-menu" class="hidden lg:hidden absolute top-full left-0 right-0 bg-blue-900 shadow-md z-10">
+            <ul class="py-4 px-6 space-y-4">
+                <li><a class="block hover:underline" href="#"><div class="gtranslate_wrapper"></div></a></li>
+                <li><a class="block hover:underline" href="home">Home</a></li>
+                <li>
+                    <a class="block hover:underline" href="aboutus">About Us</a>
+                </li>
+                <li><a class="block hover:underline" href="#">Data Stats</a></li>
+                <li><a class="block hover:underline" href="faq">FAQs</a></li>
+                <li>
+                    <a class="block hover:underline" href="contactus">Contact Us</a>
+                </li>
+                {% if request.session.get('access_token') %}
+                <li>
+                    <a href="/my-complaints" class="block hover:underline">View My Complaints</a>
+                </li>
+                <li>
+                    <form action="/logout" method="POST">
+                        <button type="submit"
+                            class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded w-full">
+                            Logout
+                        </button>
+                    </form>
+                </li>
+                {% else %}
+                <li>
+                    <a href="/login"
+                        class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded block text-center">Login</a>
+                </li>
+                <li>
+                    <a href="/signup"
+                        class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded block text-center">Sign
+                        Up</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </header>
+    <!-- Main Content -->
+    <div class="container mx-auto py-12 flex-grow">
+        <h2 class="text-3xl font-bold text-center text-blue-900">Track Issue Status</h2>
+        <p class="text-center text-gray-600 mb-8">Enter your tracking ID to check the status of your reported road issue
+        </p>
+
+        <div class="bg-white p-6 rounded-lg shadow-md max-w-2xl mx-auto">
+            <h3 class="text-xl font-bold mb-4">Issue Tracking</h3>
+            <p class="text-gray-600 mb-4">Enter the tracking ID provided when you reported the issue</p>
+
+            <form method="POST" action="/trackstatus">
+                <div class="flex items-center space-x-4">
+                    <input class="flex-grow p-2 border rounded" name="report_id" placeholder="e.g., 1234" type="text"
+                        required />
+                    <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded">
+                        Search
+                    </button>
+                </div>
+                {% if error %}
+                <div class="text-red-500 mt-2">{{ error }}</div>
+                {% endif %}
+            </form>
+
+            {% if report %}
+            <div class="mt-8 border-t pt-6">
+                <h4 class="text-lg font-bold mb-4">Report Details</h4>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-gray-600">Report ID:</p>
+                        <p class="font-medium">{{ report.id }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-600">Status:</p>
+                        <p class="font-medium">
+                            {% if report.status == 'pending' %}
+                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded">Pending</span>
+                            {% elif report.status == 'in_progress' %}
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded">In Progress</span>
+                            {% elif report.status == 'resolved' %}
+                            <span class="px-2 py-1 bg-green-100 text-green-800 rounded">Resolved</span>
+                            {% else %}
+                            <span class="px-2 py-1 bg-gray-100 text-gray-800 rounded">{{ report.status }}</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div>
+                        <p class="text-gray-600">Issue Type:</p>
+                        <p class="font-medium">{{ report.issue_type }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-600">Reported Date:</p>
+                        <p class="font-medium">{{ report.created_at[:10] }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-600">Location:</p>
+                        <p class="font-medium">{{ report.location }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-600">Last Updated:</p>
+                        <p class="font-medium">{{ report.updated_at[:10] }}</p>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <p class="text-gray-600">Description:</p>
+                    <p class="mt-1">{{ report.description }}</p>
+                </div>
+
+                {% if report.photo_path %}
+                <div class="mt-6">
+                    <p class="text-gray-600 mb-2">Attached Photo:</p>
+                    <img src="{{ report.photo_path }}" alt="Issue Photo" class="max-w-full h-auto rounded-lg shadow-md"
+                        style="max-height: 300px;">
+                </div>
+                {% endif %}
+
+                <div class="mt-6 border-t pt-4">
+                    <h5 class="font-bold mb-2">Community Feedback</h5>
+                    <div class="flex items-center">
+                        <div class="flex space-x-2 items-center">
+                            <!-- Upvote button -->
+                            <button 
+                                id="upvoteBtn" 
+                                class="flex items-center justify-center w-10 h-10 rounded-full border {% if report.get('user_vote') == 'upvote' %}bg-green-100 text-green-600 border-green-400{% else %}bg-gray-100 text-gray-600 border-gray-300 hover:bg-green-50{% endif %}"
+                                data-report-id="{{ report.id }}"
+                                data-vote-type="upvote">
+                                <i class="fas fa-thumbs-up"></i>
+                            </button>
+                            <span id="upvoteCount" class="font-medium">{{ report.get('upvote_count', 0) }}</span>
+                        </div>
+                        
+                        <div class="ml-6 flex space-x-2 items-center">
+                            <!-- Downvote button -->
+                            <button 
+                                id="downvoteBtn" 
+                                class="flex items-center justify-center w-10 h-10 rounded-full border {% if report.get('user_vote') == 'downvote' %}bg-red-100 text-red-600 border-red-400{% else %}bg-gray-100 text-gray-600 border-gray-300 hover:bg-red-50{% endif %}"
+                                data-report-id="{{ report.id }}"
+                                data-vote-type="downvote">
+                                <i class="fas fa-thumbs-down"></i>
+                            </button>
+                            <span id="downvoteCount" class="font-medium">{{ report.get('downvote_count', 0) }}</span>
+                        </div>
+                        
+                        <div class="ml-auto text-sm text-gray-500">
+                            <span>Issue relevance score: </span>
+                            <span id="voteScore" class="font-medium {% if report.get('vote_score', 0) > 0 %}text-green-600{% elif report.get('vote_score', 0) < 0 %}text-red-600{% endif %}">
+                                {{ report.get('vote_score', 0) }}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    {% if not request.session.get('access_token') %}
+                    <p class="text-sm text-gray-500 mt-2">
+                        <i class="fas fa-info-circle mr-1"></i> Please <a href="/login" class="text-blue-600 hover:underline">login</a> to vote on this issue
+                    </p>
+                    {% endif %}
+                </div>
+
+                <div class="mt-6">
+                    <h5 class="font-bold mb-2">Progress Timeline</h5>
+                    <div class="relative">
+                        <div class="absolute left-4 top-0 h-full w-0.5 bg-gray-200"></div>
+
+                        <div class="relative flex items-start mb-4">
+                            <div
+                                class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white z-10">
+                                <i class="fas fa-flag"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h6 class="font-medium">Report Received</h6>
+                                <p class="text-sm text-gray-500">{{ report.created_at[:10] }}</p>
+                                <p class="text-sm">Your report has been received and logged in our system.</p>
+                            </div>
+                        </div>
+
+                        {% if report.status == 'in_progress' or report.status == 'resolved' %}
+                        <div class="relative flex items-start mb-4">
+                            <div
+                                class="flex items-center justify-center w-8 h-8 rounded-full bg-yellow-500 text-white z-10">
+                                <i class="fas fa-tools"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h6 class="font-medium">Under Processing</h6>
+                                <p class="text-sm text-gray-500">{{ report.updated_at[:10] }}</p>
+                                <p class="text-sm">Your report is being processed and has been assigned for action.</p>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {% if report.status == 'resolved' %}
+                        <div class="relative flex items-start">
+                            <div
+                                class="flex items-center justify-center w-8 h-8 rounded-full bg-green-500 text-white z-10">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h6 class="font-medium">Issue Resolved</h6>
+                                <p class="text-sm text-gray-500">{{ report.updated_at[:10] }}</p>
+                                <p class="text-sm">The reported issue has been resolved. Thank you for your
+                                    contribution.</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer class="bg-blue-900 text-white py-8">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <h3 class="text-lg font-bold mb-4">
+                    Sadak Sathi Seva
+                </h3>
+                <p class="text-sm mb-4">
+                    Ministry of Road Transport &amp; Highways
+                </p>
+                <p class="text-sm mb-4">
+                    A Government of India initiative to empower citizens to report road issues and track their
+                    resolution.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#">
+                        <i class="fab fa-facebook-f">
+                        </i>
+                    </a>
+                    <a href="#">
+                        <i class="fab fa-twitter">
+                        </i>
+                    </a>
+                    <a href="#">
+                        <i class="fab fa-instagram">
+                        </i>
+                    </a>
+                    <a href="#">
+                        <i class="fab fa-youtube">
+                        </i>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-lg font-bold mb-4">
+                    Quick Links
+                </h3>
+                <ul class="space-y-2">
+                    <li>
+                        <a class="hover:underline" href="#">
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <a class="hover:underline" href="#">
+                            About Us
+                        </a>
+                    </li>
+                    <li>
+                        <a class="hover:underline" href="#">
+                            Track Status
+                        </a>
+                    </li>
+                    <li>
+                        <a class="hover:underline" href="#">
+                            FAQs
+                        </a>
+                    </li>
+                    <li>
+                        <a class="hover:underline" href="#">
+                            Contact Us
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-lg font-bold mb-4">
+                    Resources
+                </h3>
+                <ul class="space-y-2">
+                    <li>
+                        <a class="hover:underline" href="#">
+                            Reporting Guidelines
+                        </a>
+                    </li>
+                    <li>
+                        <a class="hover:underline" href="#">
+                            Success Stories
+                        </a>
+                    </li>
+                    <li>
+                        <a class="hover:underline" href="#">
+                            Statistics &amp; Reports
+                        </a>
+                    </li>
+                    <li>
+                        <a class="hover:underline" href="#">
+                            Open Data
+                        </a>
+                    </li>
+                    <li>
+                        <a class="hover:underline" href="#">
+                            Media Resources
+                        </a>
+                    </li>
+                    <li>
+                        <a class="hover:underline" href="#">
+                            Downloads &amp; Forms
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-lg font-bold mb-4">
+                    Contact Us
+                </h3>
+                <p class="text-sm mb-4">
+                    Ministry of Road Transport &amp; Highways, Transport Bhawan, Parliament Street, New Delhi - 110001
+                </p>
+                <p class="text-sm mb-4">
+                    <i class="fas fa-phone-alt">
+                    </i>
+                    1800-XXX-XXXX (Toll Free)
+                </p>
+                <p class="text-sm">
+                    <i class="fas fa-envelope">
+                    </i>
+                    support@sadaksathiseva.gov.in
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const checkBtn = document.getElementById('checkStatusBtn');
+            const complaintInput = document.getElementById('complaintInput');
+            const emergencyBtn = document.getElementById('reportEmergencyBtn');
+
+            // Toggle mobile menu visibility
+            mobileMenuButton?.addEventListener('click', () => {
+                mobileMenu?.classList.toggle('hidden');
+            });
+        });
+
+        const profileButton = document.querySelector('.group button');
+        const profileDropdown = document.querySelector('.group .absolute');
+
+        if (profileButton && profileDropdown) {
+            let isOpen = false;
+
+            profileButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (isOpen) {
+                    profileDropdown.classList.add('hidden');
+                } else {
+                    profileDropdown.classList.remove('hidden');
+                }
+                isOpen = !isOpen;
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!profileButton.contains(e.target) && !profileDropdown.contains(e.target) && !isOpen) {
+                    profileDropdown.classList.add('hidden');
+                    isOpen = false;
+                }
+            });
+            const upvoteBtn = document.getElementById('upvoteBtn');
+        const downvoteBtn = document.getElementById('downvoteBtn');
+        
+        if (upvoteBtn && downvoteBtn) {
+            // Function to handle voting
+            async function handleVote(button) {
+                const reportId = button.dataset.reportId;
+                const voteType = button.dataset.voteType;
+                
+                try {
+                    const response = await fetch(`/vote/${reportId}/${voteType}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.status === 'success') {
+                        // Update counts
+                        document.getElementById('upvoteCount').textContent = data.upvote_count;
+                        document.getElementById('downvoteCount').textContent = data.downvote_count;
+                        document.getElementById('voteScore').textContent = data.vote_score;
+                        
+                        // Update colors based on score
+                        const scoreElem = document.getElementById('voteScore');
+                        scoreElem.className = 'font-medium';
+                        if (data.vote_score > 0) {
+                            scoreElem.classList.add('text-green-600');
+                        } else if (data.vote_score < 0) {
+                            scoreElem.classList.add('text-red-600');
+                        }
+                        
+                        // Update button styling based on user's vote
+                        if (data.user_vote === 'upvote') {
+                            upvoteBtn.classList.add('bg-green-100', 'text-green-600', 'border-green-400');
+                            upvoteBtn.classList.remove('bg-gray-100', 'text-gray-600', 'border-gray-300');
+                            
+                            downvoteBtn.classList.remove('bg-red-100', 'text-red-600', 'border-red-400');
+                            downvoteBtn.classList.add('bg-gray-100', 'text-gray-600', 'border-gray-300');
+                        } else if (data.user_vote === 'downvote') {
+                            downvoteBtn.classList.add('bg-red-100', 'text-red-600', 'border-red-400');
+                            downvoteBtn.classList.remove('bg-gray-100', 'text-gray-600', 'border-gray-300');
+                            
+                            upvoteBtn.classList.remove('bg-green-100', 'text-green-600', 'border-green-400');
+                            upvoteBtn.classList.add('bg-gray-100', 'text-gray-600', 'border-gray-300');
+                        } else {
+                            // No vote, reset both buttons
+                            upvoteBtn.classList.remove('bg-green-100', 'text-green-600', 'border-green-400');
+                            upvoteBtn.classList.add('bg-gray-100', 'text-gray-600', 'border-gray-300');
+                            
+                            downvoteBtn.classList.remove('bg-red-100', 'text-red-600', 'border-red-400');
+                            downvoteBtn.classList.add('bg-gray-100', 'text-gray-600', 'border-gray-300');
+                        }
+                    } else {
+                        // Show error message
+                        console.error(data.message);
+                        if (data.message === 'Please login to vote') {
+                            window.location.href = '/login';
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }
+            
+            // Add event listeners
+            upvoteBtn.addEventListener('click', function() {
+                handleVote(upvoteBtn);
+            });
+            
+            downvoteBtn.addEventListener('click', function() {
+                handleVote(downvoteBtn);
+            });
+        }
+        }
+    </script>
+    <script>window.gtranslateSettings = {"default_language":"en","languages":["en","hi","bn","mr","te","ta"],"wrapper_selector":".gtranslate_wrapper","flag_size":24,"alt_flags":{"en":"usa"}}</script>
+    <script src="https://cdn.gtranslate.net/widgets/latest/popup.js" defer></script>
+</body>
+
+</html>

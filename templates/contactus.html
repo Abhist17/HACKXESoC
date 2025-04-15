@@ -1,0 +1,352 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>
+        Contact Us - Sadak Sathi Seva
+    </title>
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+</head>
+
+<body class="flex flex-col min-h-screen">
+    <!-- Header -->
+    <header class="bg-blue-900 text-white relative">
+        <div class="container mx-auto flex justify-between items-center py-4 px-6">
+            <div class="flex items-center">
+                <img alt="Sadak Sathi Seva Logo" class="mr-3 h-10 w-10" src="https://placehold.co/50x50" />
+                <div>
+                    <h1 class="text-xl font-bold">Sadak Sathi Seva</h1>
+                    <p class="text-sm">Ministry of Road Transport &amp; Highways</p>
+                </div>
+            </div>
+            <button id="mobile-menu-button" class="lg:hidden focus:outline-none">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            <nav class="hidden lg:flex space-x-6">
+                <a class="hover:underline" href="#"><div class="gtranslate_wrapper"></div></a>
+                <a class="hover:underline" href="home">Home</a>
+                <a class="hover:underline" href="aboutus">About Us</a>
+                <a class="hover:underline" href="datastats">Data Stats</a>
+                <a class="hover:underline" href="faq">FAQs</a>
+                <a class="hover:underline" href="contactus">Contact Us</a>
+                {% if request.session.get('access_token') %}
+                <div class="relative inline-block text-left group">
+                    <button class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded">
+                        Profile
+                    </button>
+                    <div
+                        class="absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden group-hover:block">
+                        <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                            <a href="/my-complaints" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                role="menuitem">View My Complaints</a>
+                            <form action="/logout" method="POST">
+                                <button type="submit"
+                                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    role="menuitem">
+                                    Logout
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <a href="/login" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Login</a>
+                <a href="/signup" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded">Sign Up</a>
+                {% endif %}
+            </nav>
+        </div>
+        <div id="mobile-menu" class="hidden lg:hidden absolute top-full left-0 right-0 bg-blue-900 shadow-md z-10">
+            <ul class="py-4 px-6 space-y-4">
+                <li><a class="block hover:underline" href="#"><div class="gtranslate_wrapper"></div></a></li>
+                <li><a class="block hover:underline" href="home">Home</a></li>
+                <li>
+                    <a class="block hover:underline" href="aboutus">About Us</a>
+                </li>
+                <li><a class="block hover:underline" href="datastats">Data Stats</a></li>
+                <li><a class="block hover:underline" href="faq">FAQs</a></li>
+                <li>
+                    <a class="block hover:underline" href="contactus">Contact Us</a>
+                </li>
+                {% if request.session.get('access_token') %}
+                <li>
+                    <a href="/my-complaints" class="block hover:underline">View My Complaints</a>
+                </li>
+                <li>
+                    <form action="/logout" method="POST">
+                        <button type="submit"
+                            class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded w-full">
+                            Logout
+                        </button>
+                    </form>
+                </li>
+                {% else %}
+                <li>
+                    <a href="/login"
+                        class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded block text-center">Login</a>
+                </li>
+                <li>
+                    <a href="/signup"
+                        class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded block text-center">Sign
+                        Up</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+
+    <main class="flex-grow bg-gray-100 py-10">
+        <div class="container mx-auto px-6">
+            <h2 class="text-2xl font-bold text-blue-900 mb-4">
+                Contact Us
+            </h2>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <p>
+                    <big><b>We’re Here to Listen — and Act</b></big><br>
+                    Have a question, suggestion, or just want to say hello? Whether you're reporting a road issue,
+                    giving feedback, or looking to collaborate, we’d love to hear from you. Your voice helps us make
+                    Indian roads safer, one report at a time.
+                </p><br>
+                <p>
+                    <big><b> Send Us a Message</b></big><br>
+                    Fill out the form below and our team will get back to you as soon as possible.<br>
+                </p><br>
+
+                <form action="mailto:support@sadaksaathi.in" method="POST" enctype="text/plain"
+                    style="max-width: 400px; margin: 10px auto; padding: 1rem; background-color: transparent; border: 1px solid rgb(30, 58, 138); border-radius: 10px; font-family: 'Rajdhani', sans-serif;">
+
+                    <label for="name"
+                        style="color: rgb(30, 58, 138); display: block; margin-bottom: 0.2rem;">Name</label>
+                    <input type="text" id="name" name="name" required placeholder="Enter your Name"
+                        style="width: 100%; padding: 0.4rem; font-size: 0.9rem; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 0.8rem;">
+
+                    <label for="email"
+                        style="color: rgb(30, 58, 138); display: block; margin-bottom: 0.2rem;">Email</label>
+                    <input type="email" id="email" name="email" required placeholder="Enter your E-mail"
+                        style="width: 100%; padding: 0.4rem; font-size: 0.9rem; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 0.8rem;">
+
+                    <label for="subject"
+                        style="color: rgb(30, 58, 138); display: block; margin-bottom: 0.2rem;">Subject</label>
+                    <input type="text" id="subject" name="subject" placeholder="Enter your Subject"
+                        style="width: 100%; padding: 0.4rem; font-size: 0.9rem; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 0.8rem;">
+
+                    <label for="message"
+                        style="color: rgb(30, 58, 138); display: block; margin-bottom: 0.2rem;">Message</label>
+                    <textarea id="message" name="message" rows="3" required placeholder="Enter your Message"
+                        style="width: 100%; padding: 0.4rem; font-size: 0.9rem; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 1rem;"></textarea>
+
+                    <div style="text-align: center;">
+                        <button type="submit"
+                            style="background-color: rgb(249, 115, 22); color: white; padding: 0.5rem 1.2rem; font-size: 0.95rem; border: none; border-radius: 6px; cursor: pointer;">
+                            Send
+                        </button>
+                    </div>
+
+                </form><br>
+                <p>
+                    <big><b>Reach Out to Us</b></big><br>
+                    For general inquiries, support, or suggestions: <b>support@sadaksathiseva.gov.in</b>
+                </p><br>
+                <p>
+                    <big><b>Our Base</b></big><br>
+                    <b>Sadak Saathi Team – Nagpur, India</b>
+                    (We’re built by students who care deeply about tech-driven civic change.)
+                </p><br>
+                <p>
+                    <big><b>Let’s Build Safer Roads — Together</b></big><br>
+                    Every message counts. Every report helps.<br>
+                    Let’s make road travel safer, smoother, and smarter for everyone.<br>
+                </p>
+
+            </div>
+        </div>
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="bg-blue-900 text-white py-10">
+        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <img alt="Government of India Emblem" class="mb-3" src="https://placehold.co/50x50" />
+                <h3 class="text-lg font-bold">
+                    Sadak Sathi Seva
+                </h3>
+                <p class="text-sm mb-4">
+                    Ministry of Road Transport &amp; Highways
+                </p>
+                <p class="text-sm mb-4">
+                    A Government of India initiative to empower citizens to report road issues and track their
+                    resolution.
+                </p>
+                <div class="flex space-x-4">
+                    <a class="text-white hover:text-gray-300" href="#">
+                        <i class="fab fa-facebook-f">
+                        </i>
+                    </a>
+                    <a class="text-white hover:text-gray-300" href="#">
+                        <i class="fab fa-twitter">
+                        </i>
+                    </a>
+                    <a class="text-white hover:text-gray-300" href="#">
+                        <i class="fab fa-instagram">
+                        </i>
+                    </a>
+                    <a class="text-white hover:text-gray-300" href="#">
+                        <i class="fab fa-youtube">
+                        </i>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-lg font-bold mb-4">
+                    Quick Links
+                </h3>
+                <ul class="space-y-2">
+                    <li>
+                        <a class="hover:underline" href="#">
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <a class="hover:underline" href="#">
+                            About Us
+                        </a>
+                    </li>
+                    <li>
+                        <a class="hover:underline" href="#">
+                            Track Status
+                        </a>
+                    </li>
+                    <li>
+                        <a class="hover:underline" href="#">
+                            FAQs
+                        </a>
+                    </li>
+                    <li>
+                        <a class="hover:underline" href="#">
+                            Contact Us
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-lg font-bold mb-4">
+                    Resources
+                </h3>
+                <ul class="space-y-2">
+                    <li>
+                        <a class="hover:underline" href="#">
+                            Reporting Guidelines
+                        </a>
+                    </li>
+                    <li>
+                        <a class="hover:underline" href="#">
+                            Success Stories
+                        </a>
+                    </li>
+                    <li>
+                        <a class="hover:underline" href="#">
+                            Statistics &amp; Reports
+                        </a>
+                    </li>
+                    <li>
+                        <a class="hover:underline" href="#">
+                            Open Data
+                        </a>
+                    </li>
+                    <li>
+                        <a class="hover:underline" href="#">
+                            Media Resources
+                        </a>
+                    </li>
+                    <li>
+                        <a class="hover:underline" href="#">
+                            Downloads &amp; Forms
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-lg font-bold mb-4">
+                    Contact Us
+                </h3>
+                <p class="mb-2">
+                    Ministry of Road Transport &amp; Highways, Transport Bhawan, Parliament Street, New Delhi - 110001
+                </p>
+                <p class="mb-2">
+                    <i class="fas fa-phone-alt">
+                    </i>
+                    1800-XXX-XXXX (Toll Free)
+                </p>
+                <p>
+                    <i class="fas fa-envelope">
+                    </i>
+                    support@sadaksathiseva.gov.in
+                </p>
+            </div>
+        </div>
+        <div class="container mx-auto px-6 mt-8 border-t border-gray-700 pt-4 text-sm text-center md:text-left">
+            <p>
+                © 2025 Sadak Sathi Seva, Government of India. All Rights Reserved.
+            </p>
+            <div class="flex justify-center md:justify-start space-x-4 mt-2">
+                <a class="hover:underline" href="#">
+                    Terms of Use
+                </a>
+                <a class="hover:underline" href="#">
+                    Privacy Policy
+                </a>
+                <a class="hover:underline" href="#">
+                    Accessibility
+                </a>
+            </div>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const checkBtn = document.getElementById('checkStatusBtn');
+            const complaintInput = document.getElementById('complaintInput');
+            const emergencyBtn = document.getElementById('reportEmergencyBtn');
+
+            // Toggle mobile menu visibility
+            mobileMenuButton?.addEventListener('click', () => {
+                mobileMenu?.classList.toggle('hidden');
+            });
+        });
+
+        const profileButton = document.querySelector('.group button');
+        const profileDropdown = document.querySelector('.group .absolute');
+
+        if (profileButton && profileDropdown) {
+            let isOpen = false;
+
+            profileButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (isOpen) {
+                    profileDropdown.classList.add('hidden');
+                } else {
+                    profileDropdown.classList.remove('hidden');
+                }
+                isOpen = !isOpen;
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!profileButton.contains(e.target) && !profileDropdown.contains(e.target) && !isOpen) {
+                    profileDropdown.classList.add('hidden');
+                    isOpen = false;
+                }
+            });
+        }
+    </script>
+    <script>window.gtranslateSettings = {"default_language":"en","languages":["en","hi","bn","mr","te","ta"],"wrapper_selector":".gtranslate_wrapper","flag_size":24,"alt_flags":{"en":"usa"}}</script>
+    <script src="https://cdn.gtranslate.net/widgets/latest/popup.js" defer></script>
+</body>
+
+</html>
