@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Street View - Sadak Sathi Seva</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <style>
+        body {
+            font-family: "Roboto", sans-serif;
+        }
+
+        .group:hover .group-hover\:block,
+        .group-hover\:block:hover {
+            display: block;
+        }
+
+        #map {
+            height: 70vh;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+    <!-- Header Section -->
+    <header class="bg-blue-900 text-white relative">
+        <div class="container mx-auto flex justify-between items-center py-4 px-6">
+            <div class="flex items-center">
+                <img alt="Sadak Sathi Seva Logo" class="mr-3 h-10 w-10" src="https://placehold.co/50x50" />
+                <div>
+                    <h1 class="text-xl font-bold">Sadak Sathi Seva</h1>
+                    <p class="text-sm">Ministry of Road Transport &amp; Highways</p>
+                </div>
+            </div>
+            <button id="mobile-menu-button" class="lg:hidden focus:outline-none">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            <nav class="hidden lg:flex space-x-6">
+                <a class="hover:underline" href="#"><div class="gtranslate_wrapper"></div></a>
+                <a class="hover:underline" href="home">Home</a>
+                <a class="hover:underline" href="aboutus">About Us</a>
+                <a class="hover:underline" href="#">Data Stats</a>
+                <a class="hover:underline" href="faq">FAQs</a>
+                <a class="hover:underline" href="contactus">Contact Us</a>
+                {% if request.session.get('access_token') %}
+                <div class="relative inline-block text-left group">
+                    <button class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded">
+                        Profile
+                    </button>
+                    <div
+                        class="absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden group-hover:block">
+                        <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                            <a href="/my-complaints" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                role="menuitem">View My Complaints</a>
+                            <form action="/logout" method="POST">
+                                <button type="submit"
+                                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    role="menuitem">
+                                    Logout
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <a href="/login" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Login</a>
+                <a href="/signup" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded">Sign Up</a>
+                {% endif %}
+            </nav>
+        </div>
+        <div id="mobile-menu" class="hidden lg:hidden absolute top-full left-0 right-0 bg-blue-900 shadow-md z-10">
+            <ul class="py-4 px-6 space-y-4">
+                <li><a class="block hover:underline" href="#"><div class="gtranslate_wrapper"></div></a></li>
+                <li><a class="block hover:underline" href="home">Home</a></li>
+                <li>
+                    <a class="block hover:underline" href="aboutus">About Us</a>
+                </li>
+                <li><a class="block hover:underline" href="#">Data Stats</a></li>
+                <li><a class="block hover:underline" href="faq">FAQs</a></li>
+                <li>
+                    <a class="block hover:underline" href="contactus">Contact Us</a>
+                </li>
+                {% if request.session.get('access_token') %}
+                <li>
+                    <a href="/my-complaints" class="block hover:underline">View My Complaints</a>
+                </li>
+                <li>
+                    <form action="/logout" method="POST">
+                        <button type="submit"
+                            class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded w-full">
+                            Logout
+                        </button>
+                    </form>
+                </li>
+                {% else %}
+                <li>
+                    <a href="/login"
+                        class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded block text-center">Login</a>
+                </li>
+                <li>
+                    <a href="/signup"
+                        class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded block text-center">Sign
+                        Up</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </header>
+
+    <!-- Map Container -->
+    <section class="py-8">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-blue-900 mb-6">Street View - Road Issues Map</h2>
+            <p class="text-gray-600 mb-6">View all reported road issues across the country. Click on a marker to see more details.</p>
+            
+            <div id="map" class="rounded-lg shadow-lg"></div>
+            
+            <!-- Hidden form to submit to track status -->
+            <form id="trackStatusForm" action="/trackstatus" method="POST" class="hidden">
+                <input type="text" id="report_id_input" name="report_id" value="">
+            </form>
+        </div>
+    </section>
+
+    <footer class="bg-blue-900 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>© 2023 Sadak Sathi Seva, Government of India. All Rights Reserved.</p>
+            <div class="mt-2 space-x-4">
+                <a class="hover:underline" href="#">Terms of Use</a>
+                <a class="hover:underline" href="#">Privacy Policy</a>
+                <a class="hover:underline" href="#">Accessibility</a>
+                <a class="hover:underline" href="#">Sitemap</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById("mobile-menu-button");
+            const mobileMenu = document.getElementById("mobile-menu");
+            
+            mobileMenuButton?.addEventListener("click", () => {
+                mobileMenu?.classList.toggle("hidden");
+            });
+
+            // Map initialization
+            const map = L.map('map').setView([20.5937, 78.9629], 5); // Default center of India
+
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+
+            // Get reports data from the server
+            const reportsData = {{ reports|tojson }};
+            
+            // Define marker colors based on issue type
+            const issueColors = {
+                'Pothole': 'red',
+                'Broken Pavement': 'orange',
+                'Faded Markings': 'blue',
+                'Obstruction': 'purple',
+                'Water Logging': 'teal',
+                'default': 'green'
+            };
+
+            // Define marker icons for different statuses
+            const getMarkerIcon = (issueType, status) => {
+                const color = issueColors[issueType] || issueColors['default'];
+                
+                // Different border color based on status
+                let borderColor = '#666';
+                if (status === 'in_progress') borderColor = '#FFA500';
+                else if (status === 'completed') borderColor = '#00AA00';
+                else if (status === 'pending') borderColor = '#FF0000';
+                
+                return L.divIcon({
+                    className: 'custom-map-marker',
+                    html: `<div style="
+                        width: 20px; 
+                        height: 20px; 
+                        background-color: ${color}; 
+                        border: 2px solid ${borderColor};
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        box-shadow: 0 0 5px rgba(0,0,0,0.3);
+                    "></div>`,
+                    iconSize: [20, 20],
+                    iconAnchor: [10, 10]
+                });
+            };
+
+            // Add markers for all reports
+            Object.values(reportsData).forEach(report => {
+                // Skip reports without valid coordinates
+                if (!report.latitude || !report.longitude || 
+                    report.latitude === 0 || report.longitude === 0) {
+                    return;
+                }
+                
+                const marker = L.marker(
+                    [report.latitude, report.longitude], 
+                    { icon: getMarkerIcon(report.issue_type, report.status) }
+                ).addTo(map);
+                
+                // Create popup content
+                const popupContent = `
+                    <div class="p-2">
+                        <h3 class="font-bold">${report.issue_type}</h3>
+                        <p>${report.description.substring(0, 100)}${report.description.length > 100 ? '...' : ''}</p>
+                        <p><strong>Status:</strong> ${report.status}</p>
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 mt-2 rounded text-sm view-details" 
+                            data-report-id="${report.id}">
+                            View Details
+                        </button>
+                    </div>
+                `;
+                
+                marker.bindPopup(popupContent);
+                
+                // Add event listener for the details button inside popup
+                marker.on('popupopen', () => {
+                    document.querySelectorAll('.view-details').forEach(button => {
+                        button.addEventListener('click', (e) => {
+                            const reportId = e.target.getAttribute('data-report-id');
+                            document.getElementById('report_id_input').value = reportId;
+                            document.getElementById('trackStatusForm').submit();
+                        });
+                    });
+                });
+            });
+        });
+    </script>
+    <script>window.gtranslateSettings = {"default_language":"en","languages":["en","hi","bn","mr","te","ta"],"wrapper_selector":".gtranslate_wrapper","flag_size":24,"alt_flags":{"en":"usa"}}</script>
+    <script src="https://cdn.gtranslate.net/widgets/latest/popup.js" defer></script>
+</body>
+</html>
