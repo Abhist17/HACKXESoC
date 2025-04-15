@@ -71,21 +71,48 @@
         
         <!-- Hero Section -->
         <section class="bg-white py-12">
-            <div class="container mx-auto text-center">
-                <h2 class="text-4xl font-bold text-blue-900">Better Roads, <span class="text-orange-500">Better India</span></h2>
-                <p class="text-gray-600 mt-4">Report road issues, track repair progress, and help build a stronger infrastructure for our nation.</p>
-                <div class="mt-6 flex justify-center space-x-4">
-                    <button id="reportIssueBtn" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded">Report Issue</button>
-                    <a href="trackstatus"><button class="border border-blue-900 text-blue-900 px-6 py-3 rounded" id="checkStatusBtn">Check status</button></a>
+            <div class="container mx-auto flex flex-col md:flex-row items-center justify-between">
+              <!-- Left content -->
+              <div class="text-left md:w-1/2">
+                <h2 class="text-4xl font-bold text-blue-900">
+                  Better Roads, <span class="text-orange-500">Better India</span>
+                </h2>
+                <p class="text-gray-600 mt-4">
+                  Report road issues, track repair progress, and help build a stronger infrastructure for our nation.
+                </p>
+                <div class="mt-6 flex justify-left space-x-4">
+                  <button id="reportIssueBtn" class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded">
+                    Report Issue
+                  </button>
+                  <a href="trackstatus">
+                    <button class="border border-blue-900 text-blue-900 px-6 py-3 rounded" id="checkStatusBtn">
+                      Check Status
+                    </button>
+                  </a>
                 </div>
-                <div class="mt-6 flex justify-center items-center space-x-2">
-                    <img alt="User 1" class="rounded-full h-8 w-8" src="https://placehold.co/30x30" />
-                    <img alt="User 2" class="rounded-full h-8 w-8" src="https://placehold.co/30x30" />
-                    <img alt="User 3" class="rounded-full h-8 w-8" src="https://placehold.co/30x30" />
-                    <p class="text-gray-600">Join <span class="font-bold">5,000+</span> citizens in improving our roads</p>
+                <div class="mt-6 flex justify-left items-center space-x-2">
+                  <img alt="User 1" class="rounded-full h-8 w-8" src="https://placehold.co/30x30" />
+                  <img alt="User 2" class="rounded-full h-8 w-8" src="https://placehold.co/30x30" />
+                  <img alt="User 3" class="rounded-full h-8 w-8" src="https://placehold.co/30x30" />
+                  <p class="text-gray-600">
+                    Join <span class="font-bold">5,000+</span> citizens in improving our roads
+                  </p>
                 </div>
+              </div>
+          
+              <!-- Right content: Image Carousel -->
+              <div class="mt-8 mb-8 md:mt-0 md:w-1/2 overflow-hidden rounded-lg shadow-lg">
+                <div class="carousel flex transition-transform duration-700 ease-in-out" id="carouselImages">
+                  <img src="carasol1.jpeg" class="w-full flex-shrink-0" />
+                  <img src="image2 (2).jpg" class="w-full flex-shrink-0" />
+                  <img src="image3 (1).jpg" class="w-full flex-shrink-0" />
+                  <img src="image4.jpg" class="w-full flex-shrink-0" />
+                  
+
+                </div>
+              </div>
             </div>
-        </section>
+          
 
         <!-- How it Works Section -->
         <section class="bg-gray-50 py-12">
@@ -225,6 +252,8 @@
     </footer>
 
     </div>
+
+    
     
     <!-- Reporting Form Template -->
     <template id="reportFormTemplate">
@@ -307,7 +336,21 @@
     </script>
     <script src="https://cdn.botpress.cloud/webchat/v2.3/inject.js"></script>
     <script src="https://files.bpcontent.cloud/2025/04/14/15/20250414151741-ID8A8ICN.js"></script>
+    <script>
+        let currentSlide = 0;
+        const carousel = document.getElementById('carouselImages');
+        const totalSlides = carousel.children.length;
     
+        function updateCarousel() {
+          carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+    
+        setInterval(() => {
+          currentSlide = (currentSlide + 1) % totalSlides;
+          updateCarousel();
+        }, 3000); 
+      </script>
+    </section>
     <script>window.gtranslateSettings = {"default_language":"en","languages":["en","hi","bn","mr","te","ta"],"wrapper_selector":".gtranslate_wrapper","flag_size":24,"alt_flags":{"en":"usa"}}</script>
 <script src="https://cdn.gtranslate.net/widgets/latest/popup.js" defer></script>
 </body>
