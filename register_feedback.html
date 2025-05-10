@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Us -Sadak Sathi Seva</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <style>
+    .bg-custom-blue {
+      background-color: #1E3A8A;
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+  <!-- Header -->
+  <header class="bg-blue-900 text-white relative">
+    <div class="container mx-auto flex justify-between items-center py-4 px-6">
+        <div class="flex items-center">
+            <img alt="Sadak Sathi Seva Logo" class="mr-3 h-10 w-10" src="logo.png" />
+            <div>
+                <h1 class="text-xl font-bold">Sadak Sathi Seva</h1>
+                <p class="text-sm">Ministry of Road Transport &amp; Highways</p>
+            </div>
+        </div>
+        <button id="mobile-menu-button" class="lg:hidden focus:outline-none">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+        <nav class="hidden lg:flex space-x-6">
+            <a class="hover:underline" href="demo.html">Home</a>
+            <a class="hover:underline" href="aboutus.html">About Us</a>
+            <a class="hover:underline" href="datastatistic.html">Data Stats</a>
+            <a class="hover:underline" href="FAQs">FAQs</a>
+            <a class="hover:underline" href="contactus.html">Contact Us</a>
+            <button class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded"><a href="profile.html">Profile</a></button>
+        </nav>
+    </div>
+    <div id="mobile-menu" class="hidden lg:hidden absolute top-full left-0 right-0 bg-blue-900 shadow-md z-10">
+        <ul class="py-4 px-6 space-y-4">
+            <li><a class="block hover:underline" href="demo.html">Home</a></li>
+            <li><a class="block hover:underline" href="aboutus.html">About Us</a></li>
+            <li><a class="block hover:underline" href="datastatistic.html">Data Stats</a></li>
+            <li><a class="block hover:underline" href="FAQs">FAQs</a></li>
+            <li><a class="block hover:underline" href="contactus.html">Contact Us</a></li>
+            <li><button class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded w-full"><a href="profile.html">Profile</a></button></li>
+        </ul>
+    </div>
+</header>
+
+
+  <!-- Main Content -->
+  <main class="flex-grow container mx-auto py-10 px-6">
+    <h2 class="text-2xl font-bold text-blue-800 mb-4">Register Feedback</h2>
+    <div class="bg-white p-6 rounded-lg shadow" style="color: #1E3A8A;">
+      <form action="#" method="POST" class="space-y-6">
+        <div>
+          <label for="name" class="block font-semibold mb-1">Name</label>
+          <input type="text" id="name" name="name" required placeholder="Enter your full name" class="w-full border border-blue-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+        </div>
+      
+        <div>
+          <label for="email" class="block font-semibold mb-1">Email</label>
+          <input type="email" id="email" name="email" required placeholder="Enter your email address" class="w-full border border-blue-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+        </div>
+      
+        <div>
+          <label for="subject" class="block font-semibold mb-1">Subject</label>
+          <select id="subject" name="subject" class="w-full border border-blue-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option disabled selected>Select a subject</option>
+            <option>Mobile App</option>
+            <option>Website Experience</option>
+            <option>Complaint Handling</option>
+            <option>Suggestions</option>
+            <option>Other</option>
+          </select>
+        </div>
+      
+        <div>
+          <label class="block font-semibold mb-1">Satisfaction Level</label>
+          <div class="flex items-center space-x-4">
+            <label class="inline-flex items-center">
+              <input type="radio" name="satisfaction" value="Very Satisfied" class="text-blue-600 focus:ring-blue-500" />
+              <span class="ml-2">Very Satisfied</span>
+            </label>
+            <label class="inline-flex items-center">
+              <input type="radio" name="satisfaction" value="Satisfied" class="text-blue-600 focus:ring-blue-500" />
+              <span class="ml-2">Satisfied</span>
+            </label>
+            <label class="inline-flex items-center">
+              <input type="radio" name="satisfaction" value="Neutral" class="text-blue-600 focus:ring-blue-500" />
+              <span class="ml-2">Neutral</span>
+            </label>
+            <label class="inline-flex items-center">
+              <input type="radio" name="satisfaction" value="Dissatisfied" class="text-blue-600 focus:ring-blue-500" />
+              <span class="ml-2">Dissatisfied</span>
+            </label>
+          </div>
+        </div>
+      
+        <div>
+          <label for="message" class="block font-semibold mb-1">Your Feedback</label>
+          <textarea id="message" name="message" rows="5" required placeholder="Write your feedback here..." class="w-full border border-blue-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+        </div>
+      
+        <div class="text-right">
+          <button type="submit" class="bg-blue-800 text-white px-6 py-2 rounded hover:bg-blue-900 transition duration-300">Submit Feedback</button>
+        </div>
+      </form>
+      
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-custom-blue text-white py-10">
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 px-6">
+      <div>
+        <img alt="Government of India Emblem" class="h-10 w-10 mb-3" src="https://placehold.co/50x50"/>
+        <h3 class="text-lg font-bold">Sadak Sathi Seva</h3>
+        <p class="text-sm">Ministry of Road Transport &amp; Highways</p>
+        <p class="mt-4">A Government of India initiative to empower citizens to report road issues and track their resolution.</p>
+        <div class="flex space-x-4 mt-4">
+          <a class="text-white hover:text-gray-300" href="#"><i class="fab fa-facebook-f"></i></a>
+          <a class="text-white hover:text-gray-300" href="#"><i class="fab fa-twitter"></i></a>
+          <a class="text-white hover:text-gray-300" href="#"><i class="fab fa-instagram"></i></a>
+          <a class="text-white hover:text-gray-300" href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-lg font-bold mb-4">Quick Links</h3>
+        <ul>
+          <li><a class="hover:underline" href="demo.html">Home</a></li>
+          <li><a class="hover:underline" href="aboutus.html">About Us</a></li>
+          <li><a class="hover:underline" href="reportedissue.html">Report Issue</a></li>
+          <li><a class="hover:underline" href="trackstatus.html">Track Status</a></li>
+          <li><a class="hover:underline" href="FAQs">FAQs</a></li>
+          <li><a class="hover:underline" href="contactus.html">Contact Us</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-lg font-bold mb-4">Resources</h3>
+        <ul>
+          <li><a class="hover:underline" href="#">Reporting Guidelines</a></li>
+          <li><a class="hover:underline" href="#">Success Stories</a></li>
+          <li><a class="hover:underline" href="#">Statistics &amp; Reports</a></li>
+          <li><a class="hover:underline" href="#">Open Data</a></li>
+          <li><a class="hover:underline" href="#">Media Resources</a></li>
+          <li><a class="hover:underline" href="#">Downloads &amp; Forms</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-lg font-bold mb-4">Contact Us</h3>
+        <p>Ministry of Road Transport &amp; Highways, Transport Bhawan, Parliament Street, New Delhi - 110001</p>
+        <p class="mt-4"><i class="fas fa-phone-alt mr-2"></i>1800-XXX-XXXX (Toll Free)</p>
+        <p class="mt-2"><i class="fas fa-envelope mr-2"></i>support@sadaksathiseva.gov.in</p>
+      </div>
+    </div>
+    <div class="container mx-auto text-center mt-10 text-sm">
+      <p>© 2025 Sadak Sathi Seva, Government of India. All Rights Reserved.</p>
+      <div class="flex justify-center space-x-4 mt-2">
+        <a class="hover:underline" href="#">Terms of Use</a>
+        <a class="hover:underline" href="#">Privacy Policy</a>
+        <a class="hover:underline" href="#">Accessibility</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const checkBtn = document.getElementById('checkStatusBtn');
+        const complaintInput = document.getElementById('complaintInput');
+        const emergencyBtn = document.getElementById('reportEmergencyBtn');
+
+        // Toggle mobile menu visibility
+        mobileMenuButton?.addEventListener('click', () => {
+            mobileMenu?.classList.toggle('hidden');
+        });        
+    });
+</script>
+</body>
+</html>
+
+
+
+
+

@@ -1,0 +1,202 @@
+<html>
+ <head>
+  <title>
+   My Profile - Sadak Sathi Seva
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+  <style>
+   body {
+            font-family: 'Roboto', sans-serif;
+        }
+  </style>
+ </head>
+ <body class="bg-gray-100">
+  <!-- Navbar -->
+  <header class="bg-blue-900 text-white relative">
+    <div class="container mx-auto flex justify-between items-center py-4 px-6">
+        <div class="flex items-center">
+            <img alt="Sadak Sathi Seva Logo" class="mr-3 h-10 w-10" src="logo.png" />
+            <div>
+                <h1 class="text-xl font-bold">Sadak Sathi Seva</h1>
+                <p class="text-sm">Ministry of Road Transport &amp; Highways</p>
+            </div>
+        </div>
+        <button id="mobile-menu-button" class="lg:hidden focus:outline-none">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+        <nav class="hidden lg:flex space-x-6">
+            <a class="hover:underline" href="home">Home</a>
+            <a class="hover:underline" href="aboutus">About Us</a>
+            <a class="hover:underline" href="datastatistic">Data Stats</a>
+            <a class="hover:underline" href="FAQs">FAQs</a>
+            <a class="hover:underline" href="contactus">Contact Us</a>
+            <button class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded"><a href="profile">Profile</a></button>
+        </nav>
+    </div>
+    <div id="mobile-menu" class="hidden lg:hidden absolute top-full left-0 right-0 bg-blue-900 shadow-md z-10">
+        <ul class="py-4 px-6 space-y-4">
+            <li><a class="block hover:underline" href="home">Home</a></li>
+            <li><a class="block hover:underline" href="aboutus">About Us</a></li>
+            <li><a class="block hover:underline" href="datastatistic">Data Stats</a></li>
+            <li><a class="block hover:underline" href="FAQs">FAQs</a></li>
+            <li><a class="block hover:underline" href="contactus">Contact Us</a></li>
+            <li><button class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded w-full"><a href="profile">Profile</a></button></li>
+        </ul>
+    </div>
+</header>
+
+  <!-- Main Content -->
+
+
+<div class="container mx-auto px-4 py-8">
+    <h2 class="text-3xl font-bold mb-6 text-gray-800">My Profile</h2>
+  
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Profile Card -->
+      <div class="bg-white p-6 rounded-2xl shadow-md border">
+        <div class="text-center">
+          <img src="https://placehold.co/100x100" alt="Profile Picture" class="rounded-full mx-auto mb-4 border-4 border-gray-200">
+          <h3 class="text-xl font-semibold text-gray-800">Rahul Sharma</h3>
+          <p class="text-sm text-gray-500 mb-4">Citizen Reporter</p>
+        </div>
+        <div class="space-y-3 text-sm text-gray-700">
+          <div class="flex items-center"><i class="fas fa-envelope mr-2 text-blue-600"></i> rahul.sharma@example.com</div>
+          <div class="flex items-center"><i class="fas fa-phone mr-2 text-blue-600"></i> +91 98765 43210</div>
+          <div class="flex items-center"><i class="fas fa-map-marker-alt mr-2 text-blue-600"></i> Mumbai, Maharashtra</div>
+          <div class="flex items-center"><i class="fas fa-calendar-alt mr-2 text-blue-600"></i> Member since January 2023</div>
+        </div>
+        <div class="mt-5 text-center">
+          <button class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-medium py-2 px-4 rounded-full text-sm">Edit Profile</button>
+        </div>
+      </div>
+  
+      <!-- Overview and Stats -->
+      <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-md border">
+        <!-- Tab Bar -->
+        <div class="border-b border-gray-200 mb-6">
+          <ul class="flex flex-wrap text-sm font-medium text-center">
+            <li class="mr-4"><a href="profile" class="inline-block py-2 px-4 hover:text-blue-600">Overview</a></li>
+            <li class="mr-4"><a href="reportedissue" class="inline-block py-2 px-4 text-blue-600 border-b-2 border-blue-600">Reported Issues</a></li>
+            <li><a href="activity" class="inline-block py-2 px-4 hover:text-blue-600">Activity</a></li>
+          </ul>
+        </div>
+  
+        <!-- Stats Summary -->
+        <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+            <h1 class="text-2xl font-bold mb-2">My Reported Issues</h1>
+            <p class="text-gray-600 mb-6">All issues you've reported to date</p>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white">
+                    <thead>
+                        <tr class="w-full bg-gray-100 text-left text-gray-600 uppercase text-sm leading-normal">
+                            <th class="py-3 px-6">Tracking ID</th>
+                            <th class="py-3 px-6">Issue</th>
+                            <th class="py-3 px-6">Reported On</th>
+                            <th class="py-3 px-6">Status</th>
+                            <th class="py-3 px-6">Last Updated</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-600 text-sm font-light">
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6">MH20230615</td>
+                            <td class="py-3 px-6">
+                                <div>Large pothole on NH-48</div>
+                                <div class="text-gray-500 text-xs">Mumbai-Pune Expressway, Km 42</div>
+                            </td>
+                            <td class="py-3 px-6">June 15, 2023</td>
+                            <td class="py-3 px-6">
+                                <span class="bg-orange-100 text-orange-600 py-1 px-3 rounded-full text-xs">In Progress</span>
+                            </td>
+                            <td class="py-3 px-6">July 2, 2023</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6">MH20230728</td>
+                            <td class="py-3 px-6">
+                                <div>Broken street light</div>
+                                <div class="text-gray-500 text-xs">Andheri West, S.V. Road</div>
+                            </td>
+                            <td class="py-3 px-6">July 28, 2023</td>
+                            <td class="py-3 px-6">
+                                <span class="bg-green-100 text-green-600 py-1 px-3 rounded-full text-xs">Completed</span>
+                            </td>
+                            <td class="py-3 px-6">August 10, 2023</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6">MH20230905</td>
+                            <td class="py-3 px-6">
+                                <div>Damaged road sign</div>
+                                <div class="text-gray-500 text-xs">Eastern Express Highway, Vikhroli</div>
+                            </td>
+                            <td class="py-3 px-6">September 5, 2023</td>
+                            <td class="py-3 px-6">
+                                <span class="bg-gray-100 text-gray-600 py-1 px-3 rounded-full text-xs">pending</span>
+                            </td>
+                            <td class="py-3 px-6">September 7, 2023</td>
+                        </tr>
+
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6">MH20230905</td>
+                            <td class="py-3 px-6">
+                                <div>Damaged road sign</div>
+                                <div class="text-gray-500 text-xs">Eastern Express Highway, Vikhroli</div>
+                            </td>
+                            <td class="py-3 px-6">September 5, 2023</td>
+                            <td class="py-3 px-6">
+                                <span class="bg-gray-100 text-gray-600 py-1 px-3 rounded-full text-xs">pending</span>
+                            </td>
+                            <td class="py-3 px-6">September 7, 2023</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6">MH20230905</td>
+                            <td class="py-3 px-6">
+                                <div>Damaged road sign</div>
+                                <div class="text-gray-500 text-xs">Eastern Express Highway, Vikhroli</div>
+                            </td>
+                            <td class="py-3 px-6">September 5, 2023</td>
+                            <td class="py-3 px-6">
+                                <span class="bg-gray-100 text-gray-600 py-1 px-3 rounded-full text-xs">pending</span>
+                            </td>
+                            <td class="py-3 px-6">September 7, 2023</td>
+                        </tr>
+                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                            <td class="py-3 px-6">MH20230905</td>
+                            <td class="py-3 px-6">
+                                <div>Damaged road sign</div>
+                                <div class="text-gray-500 text-xs">Eastern Express Highway, Vikhroli</div>
+                            </td>
+                            <td class="py-3 px-6">September 5, 2023</td>
+                            <td class="py-3 px-6">
+                                <span class="bg-gray-100 text-gray-600 py-1 px-3 rounded-full text-xs">pending</span>
+                            </td>
+                            <td class="py-3 px-6">September 7, 2023</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-6 text-center">
+                <!-- <button class="bg-white text-gray-600 border border-gray-300 py-2 px-4 rounded-lg hover:bg-gray-100">View All Reports</button> -->
+            </div>
+        </div>
+        </div>
+  
+ 
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const checkBtn = document.getElementById('checkStatusBtn');
+        const complaintInput = document.getElementById('complaintInput');
+        const emergencyBtn = document.getElementById('reportEmergencyBtn');
+
+        // Toggle mobile menu visibility
+        mobileMenuButton?.addEventListener('click', () => {
+            mobileMenu?.classList.toggle('hidden');
+        });        
+    });
+</script>
+ </body>
+</html>
